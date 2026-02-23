@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 type OrgNodeProps = {
   title: string;
@@ -40,73 +41,89 @@ function OrgNode({ title, name, subtitle, accent = "primary" }: OrgNodeProps) {
  * - Desktop: structure hiérarchique + lignes via SVG
  */
 const OrgChart: React.FC = () => {
+  const { t } = useTranslation();
+
+  // Noms (souvent non traduits)
+  const presidentName = "Mougoue Christian";
+  const coPresidentName = "MESSINGA MESSINGA Valère";
+  const techLeadName = "Mogou Kamta Hernandez";
+  const salesDirectorName = "Marie Dongmo";
+  const financeLeadName = t("org.name.placeholder");
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
       viewport={{ once: true }}
-      aria-label="Organigramme de l'entreprise"
+      aria-label={t("org.aria")}
       className="w-full"
     >
       <div className="mx-auto w-full max-w-screen-2xl px-6 sm:px-8 lg:px-10 pt-10 md:pt-14">
         {/* TITRE */}
         <div className="text-center">
           <h2 className="font-semibold text-md md:text-lg lg:text-xl xl:text-2xl">
-            Organigramme de l’entreprise
+            {t("org.title")}
           </h2>
         </div>
 
         {/* MOBILE (stack) */}
         <div className="mt-10 md:hidden space-y-6">
-          <OrgNode title="Président Fondateur" name="Mougoue Christian" />
+          <OrgNode
+            title={t("org.role.presidentFounder")}
+            name={presidentName}
+          />
+
           <div className="pl-4 border-l-2 border-[#00A9DC]/40">
             <OrgNode
-              title="Co-Président Fondateur"
-              name="MESSINGA MESSINGA Valère"
+              title={t("org.role.coPresidentFounder")}
+              name={coPresidentName}
             />
           </div>
 
           <div className="grid grid-cols-1 gap-6">
+            {/* TECH */}
             <div className="pl-4 border-l-2 border-[#00A9DC]/25">
               <OrgNode
-                title="Responsable Technique"
-                name="Mogou Kamta Hernandez"
-                subtitle="Encadre l’équipe technique"
+                title={t("org.role.techLead")}
+                name={techLeadName}
+                subtitle={t("org.subtitle.tech.mobile")}
                 accent="success"
               />
               <div className="mt-3 pl-4 border-l-2 border-emerald-500/30">
                 <OrgNode
-                  title="Équipe"
-                  name="Techniciens"
-                  subtitle="Interventions, maintenance, support"
+                  title={t("org.role.team")}
+                  name={t("org.team.technicians")}
+                  subtitle={t("org.subtitle.team.tech.mobile")}
                   accent="success"
                 />
               </div>
             </div>
 
+            {/* SALES */}
             <div className="pl-4 border-l-2 border-[#00A9DC]/25">
               <OrgNode
-                title="Directrice Commerciale"
-                name="Marie Dongmo"
-                subtitle="Développe les ventes et le portefeuille clients"
+                title={t("org.role.salesDirector")}
+                name={salesDirectorName}
+                subtitle={t("org.subtitle.sales.mobile")}
                 accent="warning"
               />
               <div className="mt-3 pl-4 border-l-2 border-amber-500/30">
                 <OrgNode
-                  title="Équipe"
-                  name="Vendeurs"
-                  subtitle="Prospection, suivi clients, closing"
+                  title={t("org.role.team")}
+                  name={t("org.team.sellers")}
+                  subtitle={t("org.subtitle.team.sales.mobile")}
                   accent="warning"
                 />
               </div>
             </div>
 
+            {/* FINANCE */}
             <div className="pl-4 border-l-2 border-[#00A9DC]/25">
               <OrgNode
-                title="Responsable Financier"
-                name="(Nom)"
-                subtitle="Trésorerie, comptabilité, reporting"
+                title={t("org.role.financeLead")}
+                name={financeLeadName}
+                subtitle={t("org.subtitle.finance.mobile")}
               />
             </div>
           </div>
@@ -114,7 +131,6 @@ const OrgChart: React.FC = () => {
 
         {/* DESKTOP (diagram + lines) */}
         <div className="relative mt-12 hidden md:block">
-          {/* Container */}
           <div className="relative mx-auto max-w-6xl rounded-2xl border border-[#00A9DC]/15 bg-white/60 p-8 shadow-sm">
             {/* SVG lines (desktop only) */}
             <svg
@@ -123,7 +139,6 @@ const OrgChart: React.FC = () => {
               preserveAspectRatio="none"
               aria-hidden="true"
             >
-              {/* lines color */}
               <defs>
                 <style>
                   {`
@@ -133,58 +148,54 @@ const OrgChart: React.FC = () => {
                 </style>
               </defs>
 
-              {/* Top -> Co-President */}
               <path className="l" d="M600 150 L600 220" />
-
-              {/* Split to 3 columns */}
               <path className="l" d="M600 220 L600 270" />
               <path className="l" d="M260 270 L940 270" />
               <path className="l" d="M260 270 L260 310" />
               <path className="l" d="M600 270 L600 310" />
               <path className="l" d="M940 270 L940 310" />
-
-              {/* Tech -> Technicians */}
               <path className="s" d="M260 420 L260 465" />
             </svg>
 
             {/* Row 1 */}
             <div className="flex justify-center">
               <div style={{ width: 420 }}>
-                <OrgNode title="Président Fondateur" name="Mougoue Christian" />
+                <OrgNode
+                  title={t("org.role.presidentFounder")}
+                  name={presidentName}
+                />
               </div>
             </div>
 
-            {/* Spacer for line alignment */}
             <div className="h-16" />
 
             {/* Row 2 */}
             <div className="flex justify-center">
               <div style={{ width: 520 }}>
                 <OrgNode
-                  title="Co-Président Fondateur"
-                  name="MESSINGA MESSINGA Valère"
+                  title={t("org.role.coPresidentFounder")}
+                  name={coPresidentName}
                 />
               </div>
             </div>
 
-            {/* Spacer */}
             <div className="h-16" />
 
-            {/* Row 3: 3 heads */}
+            {/* Row 3 */}
             <div className="grid grid-cols-3 gap-8 items-start">
               {/* Tech */}
               <div className="space-y-6">
                 <OrgNode
-                  title="Responsable Technique"
-                  name="Mogou Kamta Hernandez"
-                  subtitle="Coordination technique & opérations"
+                  title={t("org.role.techLead")}
+                  name={techLeadName}
+                  subtitle={t("org.subtitle.tech.desktop")}
                   accent="success"
                 />
                 <div className="pl-6">
                   <OrgNode
-                    title="Équipe"
-                    name="Techniciens"
-                    subtitle="Maintenance, installation, support"
+                    title={t("org.role.team")}
+                    name={t("org.team.technicians")}
+                    subtitle={t("org.subtitle.team.tech.desktop")}
                     accent="success"
                   />
                 </div>
@@ -193,16 +204,16 @@ const OrgChart: React.FC = () => {
               {/* Commercial */}
               <div className="space-y-6">
                 <OrgNode
-                  title="Directrice Commerciale"
-                  name="Marie Dongmo"
-                  subtitle="Stratégie commerciale & croissance"
+                  title={t("org.role.salesDirector")}
+                  name={salesDirectorName}
+                  subtitle={t("org.subtitle.sales.desktop")}
                   accent="warning"
                 />
                 <div className="pl-6">
                   <OrgNode
-                    title="Équipe"
-                    name="Vendeurs"
-                    subtitle="Prospection, pipeline, conversion"
+                    title={t("org.role.team")}
+                    name={t("org.team.sellers")}
+                    subtitle={t("org.subtitle.team.sales.desktop")}
                     accent="warning"
                   />
                 </div>
@@ -211,20 +222,14 @@ const OrgChart: React.FC = () => {
               {/* Finance */}
               <div className="space-y-6">
                 <OrgNode
-                  title="Responsable Financier"
-                  name="(Nom)"
-                  subtitle="Budget, comptabilité, reporting"
+                  title={t("org.role.financeLead")}
+                  name={financeLeadName}
+                  subtitle={t("org.subtitle.finance.desktop")}
                   accent="primary"
                 />
               </div>
             </div>
           </div>
-
-          {/* Small note */}
-          {/* <p className="text-center text-xs text-[#5A5C62] mt-4">
-            Les intitulés et noms peuvent être ajustés selon l’évolution de
-            l’équipe.
-          </p> */}
         </div>
       </div>
     </motion.section>

@@ -37,7 +37,7 @@ const Produits: React.FC = () => {
         <Presentation onOrder={handleOrder} />
 
         {/* ✅ Bloc SEO visible (texte que Google indexe) */}
-        <section className="mx-auto w-full max-w-screen-2xl px-6 sm:px-8 lg:px-10 mt-6">
+        {/* <section className="mx-auto w-full max-w-screen-2xl px-6 sm:px-8 lg:px-10 mt-6">
           <div className="max-w-4xl">
             <h1 className="text-2xl md:text-3xl font-bold">
               Acheter des ordinateurs et laptops à Yaoundé – Christland Tech
@@ -51,7 +51,7 @@ const Produits: React.FC = () => {
               Yaoundé, Douala et partout au Cameroun.
             </p>
           </div>
-        </section>
+        </section> */}
 
         {/* ✅ UN SEUL MODAL */}
         {selectedProduct && (

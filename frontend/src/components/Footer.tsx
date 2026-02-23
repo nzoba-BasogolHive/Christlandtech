@@ -25,9 +25,7 @@ const Footer: React.FC = () => {
     { key: "Assistance", to: "/assistance" },
   ];
 
-  const whatsappLink =
-    "https://chat.whatsapp.com/CiwjQaL7T7PfqZbgqAXD?mode=gi";
-
+  const whatsappLink = "https://chat.whatsapp.com/CiwjQaL7T7PfqZbgqAXD?mode=gi";
   const privacyPdfHref = `${import.meta.env.BASE_URL}docs/Politique_confidentialité.pdf`;
 
   useEffect(() => {
@@ -41,9 +39,9 @@ const Footer: React.FC = () => {
   return (
     <>
       <footer className="bg-[#090808] text-white pt-8 pb-6">
-        <div className="mx-auto w-full max-w-screen-2xl px-6 sm:px-8 lg:px-10">
+        <div className="mx-auto w-full max-w-screen-2xl px-6 sm:px-10 lg:px-16">
           {/* Top */}
-          <div className="flex items-start justify-between gap-6">
+          <div className="flex items-start gap-6">
             <Link
               to="/"
               className="flex items-center gap-4 min-w-0"
@@ -75,7 +73,7 @@ const Footer: React.FC = () => {
             </Link>
 
             <nav
-              className="flex items-center gap-5 text-white text-lg lg:text-xl mt-2"
+              className="ml-auto flex items-center gap-5 text-white text-lg lg:text-xl mt-2"
               aria-label={t("Réseaux sociaux") || "Social links"}
             >
               <a href="#" aria-label="X" className="hover:text-[#00A9DC] transition-colors">
@@ -101,7 +99,8 @@ const Footer: React.FC = () => {
           </div>
 
           {/* Contenu */}
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-10">
+            {/* 1) Siège */}
             <div>
               <h2 className="font-semibold text-white text-lg lg:text-xl mb-2">
                 {t("siege")}
@@ -110,19 +109,35 @@ const Footer: React.FC = () => {
               <p className="text-sm lg:text-base text-white/85">Monté Jouvence</p>
             </div>
 
-            <nav className="space-y-2 md:justify-self-center" aria-label="Liens">
-              {footerLinks.map((link) => (
-                <Link
-                  key={link.key}
-                  to={link.to}
-                  className="block text-sm lg:text-base text-white/85 hover:text-[#00A9DC] transition-colors"
-                >
-                  {t(link.key)}
-                </Link>
-              ))}
-            </nav>
+            {/* 2) Contact (sans WhatsApp ici) */}
+            <div className="md:justify-self-center">
+              <p className="font-semibold text-white mb-2 lg:text-lg">
+                {t("footer.questions.title")}
+              </p>
 
-            <div className="md:justify-self-end text-sm lg:text-base text-white/80">
+              <div className="text-sm lg:text-base text-white/85 space-y-2">
+                <a
+                  href="mailto:info@christland.tech"
+                  className="hover:underline inline-flex items-center gap-2"
+                >
+                  <FaEnvelope /> info@christland.tech
+                </a>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <FaPhone />
+                  <a href="tel:+237691554641" className="hover:underline">
+                    +237 691554641
+                  </a>
+                  <span className="text-white/40">/</span>
+                  <a href="tel:+237676089671" className="hover:underline">
+                    676089671
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* 3) Support */}
+            <div className="text-sm lg:text-base text-white/80 md:justify-self-center">
               <p className="font-semibold text-white mb-2 lg:text-lg">
                 {t("footer.support.title")}
               </p>
@@ -130,87 +145,88 @@ const Footer: React.FC = () => {
               <p>{t("footer.support.line2")}</p>
               <p>{t("footer.support.line3")}</p>
             </div>
-          </div>
 
-          {/* Contact + WhatsApp */}
-          <div className="mt-8 border-t border-white/10 pt-5">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-              <div className="text-sm lg:text-base">
-                <p className="font-semibold text-white lg:text-lg">
-                  {t("footer.questions.title")}
-                </p>
-
-                <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-white/85">
-                  <a
-                    href="mailto:info@christland.tech"
-                    className="hover:underline inline-flex items-center gap-2"
-                  >
-                    <FaEnvelope /> info@christland.tech
-                  </a>
-
-                  <span className="hidden sm:inline text-white/30">|</span>
-
-                  <span className="inline-flex items-center gap-2">
-                    <FaPhone />
-                    <a href="tel:+237691554641" className="hover:underline">
-                      +237 691554641
-                    </a>
-                    <span className="text-white/40">/</span>
-                    <a href="tel:+237676089671" className="hover:underline">
-                      676089671
-                    </a>
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex flex-col items-start md:items-end gap-1">
+            {/* 4) Liens (relative pour placer WhatsApp dans le vide) */}
+            <div className="relative md:justify-self-end">
+              {/* ✅ WhatsApp ABSOLU dans l'espace vide entre Support et Liens */}
+              <div
+                className="
+                  hidden md:flex
+                  absolute
+                  left-[-190px]
+                  top-[40px]
+                  flex-col items-center
+                  gap-2
+                "
+              >
                 <a
                   href={whatsappLink}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-md bg-white/10 hover:bg-white/15 transition px-4 py-2 text-sm lg:text-base"
+                  className="
+                    inline-flex items-center justify-center gap-2
+                    rounded-md bg-white/10 hover:bg-white/15 transition
+                    px-3 py-1.5
+                    text-xs lg:text-sm
+                    whitespace-nowrap
+                  "
                   aria-label="WhatsApp"
                 >
                   <FaWhatsapp className="text-[#25D366]" />
                   WhatsApp
                 </a>
-                <span className="text-xs lg:text-sm text-white/60">
+
+                <span className="text-[11px] lg:text-xs text-white/60 text-center">
                   {t("footer.whatsapp.join")}
                 </span>
               </div>
+
+              {/* ✅ Liens à droite (ne bouge pas) */}
+              <nav className="space-y-2" aria-label="Liens">
+                {footerLinks.map((link) => (
+                  <Link
+                    key={link.key}
+                    to={link.to}
+                    className="block text-sm lg:text-base text-white/85 hover:text-[#00A9DC] transition-colors"
+                  >
+                    {t(link.key)}
+                  </Link>
+                ))}
+              </nav>
             </div>
           </div>
 
-          {/* Légal */}
-          <div className="mt-5 border-t border-white/10 pt-4">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-              <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm lg:text-base text-white/80">
-                <span>{t("footer.legal.title")}</span>
+          {/* Légal : JAUNE en haut, ROUGE en dessous */}
+          <div className="mt-10 border-t border-white/10 pt-5">
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+              <div className="text-sm lg:text-base text-white/80">
+                <div className="flex flex-wrap gap-x-6 gap-y-2">
+                  <span>{t("footer.legal.title")}</span>
 
-                <button
-                  type="button"
-                  onClick={() => setOpenPdf(true)}
-                  className="hover:text-[#00A9DC] transition-colors underline underline-offset-4"
-                >
-                  {t("footer.legal.privacy")}
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => setOpenPdf(true)}
+                    className="hover:text-[#00A9DC] transition-colors underline underline-offset-4"
+                  >
+                    {t("footer.legal.privacy")}
+                  </button>
+                </div>
 
-                <span>{t("footer.legal.shipping")}</span>
-                <span>{t("footer.copyright")}</span>
+                <div className="mt-2 flex flex-wrap gap-x-6 gap-y-2">
+                  <span>{t("footer.legal.shipping")}</span>
+                  <span>{t("footer.copyright")}</span>
+                </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3 text-xs lg:text-sm text-white/65">
-                
-                {/* <span className="hidden sm:inline text-white/30">|</span> */}
-                <a
-                  href="https://basogol-hive.tech"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-[#00A9DC] transition-colors underline underline-offset-4"
-                >
-                  {t("footer.dev")}
-                </a>
-              </div>
+              <a
+                href="https://basogolhive.com
+ "
+                target="_blank"
+                rel="noreferrer"
+                className="self-start md:self-end md:ml-auto text-base sm:text-lg lg:text-xl font-semibold text-white hover:text-[#00A9DC] transition-colors underline underline-offset-4"
+              >
+                {t("footer.dev")}
+              </a>
             </div>
           </div>
         </div>

@@ -1,13 +1,5 @@
 import React, { useMemo, useState } from "react";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  User,
-  AtSign,
-  MessageSquare,
-  PenLine,
-} from "lucide-react";
+import { Mail, Phone, MapPin, User, AtSign, MessageSquare, PenLine } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
@@ -26,10 +18,7 @@ type FieldProps = {
 const Field: React.FC<FieldProps> = ({ id, label, icon, children }) => {
   return (
     <div>
-      <label
-        htmlFor={id}
-        className="block text-[13px] font-medium text-slate-700 mb-1"
-      >
+      <label htmlFor={id} className="block text-[13px] font-medium text-slate-700 mb-1">
         {label}
       </label>
 
@@ -37,7 +26,6 @@ const Field: React.FC<FieldProps> = ({ id, label, icon, children }) => {
         <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
           {icon}
         </div>
-
         {children}
       </div>
     </div>
@@ -47,19 +35,16 @@ const Field: React.FC<FieldProps> = ({ id, label, icon, children }) => {
 const ContactSection: React.FC<ContactSectionProps> = ({ id }) => {
   const { t } = useTranslation();
 
-  // champs
   const [nom, setNom] = useState("");
   const [email, setEmail] = useState("");
   const [telephone, setTelephone] = useState("");
   const [sujet, setSujet] = useState("");
   const [message, setMessage] = useState("");
 
-  // états UI
   const [submitting, setSubmitting] = useState(false);
   const [ok, setOk] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
-  // IDs
   const nameId = "contact-name";
   const emailId = "contact-email";
   const phoneId = "contact-phone";
@@ -72,7 +57,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ id }) => {
     setErr(null);
 
     if (!nom.trim() || !email.trim() || !sujet.trim() || !message.trim()) {
-      setErr("Veuillez remplir nom, email, sujet et message.");
+      setErr(t("contact.validation.required"));
       return;
     }
 
@@ -86,14 +71,14 @@ const ContactSection: React.FC<ContactSectionProps> = ({ id }) => {
         message: message.trim(),
       });
 
-      setOk("Message envoyé avec succès.");
+      setOk(t("contact.success"));
       setNom("");
       setEmail("");
       setTelephone("");
       setSujet("");
       setMessage("");
     } catch (e: any) {
-      setErr(e?.message || "Erreur lors de l’envoi du message.");
+      setErr(e?.message || t("contact.error"));
     } finally {
       setSubmitting(false);
     }
@@ -102,11 +87,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ id }) => {
   const containerVariants: Variants = useMemo(
     () => ({
       hidden: { opacity: 0, y: 60 },
-      visible: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.7, ease: "easeOut" },
-      },
+      visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
     }),
     []
   );
@@ -124,22 +105,10 @@ const ContactSection: React.FC<ContactSectionProps> = ({ id }) => {
       whileInView="visible"
       viewport={{ once: true, amount: 0.4 }}
       aria-labelledby="contact-section-title"
-      className="
-        relative
-        mx-auto my-8 md:my-12
-        w-full max-w-screen-xl 2xl:max-w-screen-2xl
-        px-4 sm:px-6 lg:px-10
-      "
+      className="relative mx-auto my-8 md:my-12 w-full max-w-screen-xl 2xl:max-w-screen-2xl px-4 sm:px-6 lg:px-10"
     >
-      {/* Fond “premium” */}
       <div
-        className="
-          absolute inset-0 -z-10
-          rounded-3xl
-          bg-gradient-to-br from-sky-50 via-white to-sky-100
-          ring-1 ring-slate-200/70
-          shadow-[0_25px_70px_rgba(2,132,199,0.10)]
-        "
+        className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-sky-50 via-white to-sky-100 ring-1 ring-slate-200/70 shadow-[0_25px_70px_rgba(2,132,199,0.10)]"
       />
 
       <div className="grid md:grid-cols-2 gap-10 lg:gap-16 p-6 sm:p-8 lg:p-10">
@@ -147,22 +116,17 @@ const ContactSection: React.FC<ContactSectionProps> = ({ id }) => {
         <div className="flex flex-col items-center md:items-start text-center md:text-left">
           <div className="inline-flex items-center gap-2 rounded-full bg-sky-100 text-sky-700 px-3 py-1 text-xs font-semibold">
             <span className="h-2 w-2 rounded-full bg-sky-500" />
-            Support 24/7
+            {t("contact.badge")}
           </div>
 
-          <h2
-            id="contact-section-title"
-            className="mt-4 text-2xl sm:text-3xl font-extrabold text-slate-900"
-          >
-            {t("form.description") || "Laissez votre message"}
+          <h2 id="contact-section-title" className="mt-4 text-2xl sm:text-3xl font-extrabold text-slate-900">
+            {t("form.description")}
           </h2>
 
           <p className="mt-3 text-slate-600 leading-relaxed max-w-md">
-            {t("com.con") ||
-              "Laissez-nous un message et nous vous répondrons rapidement."}
+            {t("com.con")}
           </p>
 
-          {/* Profil + halo */}
           <div className="mt-6 relative">
             <div className="absolute inset-0 -z-10 blur-2xl rounded-full bg-sky-200/60" />
             <img
@@ -175,7 +139,6 @@ const ContactSection: React.FC<ContactSectionProps> = ({ id }) => {
             />
           </div>
 
-          {/* Infos */}
           <div className="mt-6 w-full max-w-md space-y-3">
             <a
               href="mailto:info@christland.tech"
@@ -185,7 +148,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ id }) => {
                 <Mail size={18} />
               </span>
               <div className="min-w-0">
-                <div className="text-xs text-slate-500">Email</div>
+                <div className="text-xs text-slate-500">{t("contact.info.email")}</div>
                 <div className="text-sm font-semibold text-slate-900 group-hover:text-sky-700">
                   info@christland.tech
                 </div>
@@ -200,7 +163,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ id }) => {
                 <Phone size={18} />
               </span>
               <div className="min-w-0">
-                <div className="text-xs text-slate-500">Téléphone</div>
+                <div className="text-xs text-slate-500">{t("contact.info.phone")}</div>
                 <div className="text-sm font-semibold text-slate-900 group-hover:text-sky-700">
                   +237 691 554 641
                 </div>
@@ -215,7 +178,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ id }) => {
                 <Phone size={18} />
               </span>
               <div className="min-w-0">
-                <div className="text-xs text-slate-500">Téléphone</div>
+                <div className="text-xs text-slate-500">{t("contact.info.phone")}</div>
                 <div className="text-sm font-semibold text-slate-900 group-hover:text-sky-700">
                   +237 676 089 671
                 </div>
@@ -227,41 +190,30 @@ const ContactSection: React.FC<ContactSectionProps> = ({ id }) => {
                 <MapPin size={18} />
               </span>
               <div className="min-w-0">
-                <div className="text-xs text-slate-500">Localisation</div>
+                <div className="text-xs text-slate-500">{t("contact.info.location")}</div>
                 <div className="text-sm font-semibold text-slate-900">
-                  Yaoundé, Cameroun
+                  {t("contact.info.location.value")}
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* DROITE - Formulaire */}
+        {/* DROITE */}
         <div className="rounded-3xl bg-white/80 border border-slate-200 shadow-sm p-5 sm:p-6 lg:p-8">
           {ok && (
-            <div
-              className="mb-4 rounded-xl bg-emerald-50 border border-emerald-200 p-3 text-emerald-800 text-sm"
-              role="status"
-              aria-live="polite"
-            >
+            <div className="mb-4 rounded-xl bg-emerald-50 border border-emerald-200 p-3 text-emerald-800 text-sm" role="status" aria-live="polite">
               {ok}
             </div>
           )}
           {err && (
-            <div
-              className="mb-4 rounded-xl bg-red-50 border border-red-200 p-3 text-red-800 text-sm"
-              role="alert"
-            >
+            <div className="mb-4 rounded-xl bg-red-50 border border-red-200 p-3 text-red-800 text-sm" role="alert">
               {err}
             </div>
           )}
 
           <form className="space-y-4" onSubmit={onSubmit} noValidate>
-            <Field
-              id={nameId}
-              label={t("name.input") || "Nom"}
-              icon={<User size={18} />}
-            >
+            <Field id={nameId} label={t("name.input")} icon={<User size={18} />}>
               <input
                 id={nameId}
                 type="text"
@@ -269,15 +221,11 @@ const ContactSection: React.FC<ContactSectionProps> = ({ id }) => {
                 onChange={(e) => setNom(e.target.value)}
                 className={inputBase}
                 autoComplete="name"
-                placeholder="Votre nom"
+                placeholder={t("contact.placeholder.name")}
               />
             </Field>
 
-            <Field
-              id={emailId}
-              label={t("email.input") || "Email"}
-              icon={<AtSign size={18} />}
-            >
+            <Field id={emailId} label={t("email.input")} icon={<AtSign size={18} />}>
               <input
                 id={emailId}
                 type="email"
@@ -285,15 +233,11 @@ const ContactSection: React.FC<ContactSectionProps> = ({ id }) => {
                 onChange={(e) => setEmail(e.target.value)}
                 className={inputBase}
                 autoComplete="email"
-                placeholder="ex: exemple@mail.com"
+                placeholder={t("contact.placeholder.email")}
               />
             </Field>
 
-            <Field
-              id={phoneId}
-              label={t("phone.input") || "Téléphone (optionnel)"}
-              icon={<Phone size={18} />}
-            >
+            <Field id={phoneId} label={t("phone.input")} icon={<Phone size={18} />}>
               <input
                 id={phoneId}
                 type="tel"
@@ -301,31 +245,24 @@ const ContactSection: React.FC<ContactSectionProps> = ({ id }) => {
                 onChange={(e) => setTelephone(e.target.value)}
                 className={inputBase}
                 autoComplete="tel"
-                placeholder="+237 ..."
+                placeholder={t("contact.placeholder.phone")}
               />
             </Field>
 
-            <Field
-              id={subjectId}
-              label={t("subject.input") || "Sujet"}
-              icon={<PenLine size={18} />}
-            >
+            <Field id={subjectId} label={t("subject.input")} icon={<PenLine size={18} />}>
               <input
                 id={subjectId}
                 type="text"
                 value={sujet}
                 onChange={(e) => setSujet(e.target.value)}
                 className={inputBase}
-                placeholder="Objet de votre message"
+                placeholder={t("contact.placeholder.subject")}
               />
             </Field>
 
             <div>
-              <label
-                htmlFor={messageId}
-                className="block text-[13px] font-medium text-slate-700 mb-1"
-              >
-                {t("message.input") || "Message"}
+              <label htmlFor={messageId} className="block text-[13px] font-medium text-slate-700 mb-1">
+                {t("message.input")}
               </label>
 
               <div className="relative">
@@ -343,7 +280,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ id }) => {
                     "placeholder:text-slate-400 shadow-sm outline-none transition resize-none min-h-[190px] " +
                     "focus:border-sky-300 focus:ring-4 focus:ring-sky-200/60"
                   }
-                  placeholder="Dites-nous ce dont vous avez besoin…"
+                  placeholder={t("contact.placeholder.message")}
                 />
               </div>
             </div>
@@ -353,8 +290,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ id }) => {
                 type="submit"
                 disabled={submitting}
                 className="
-                  inline-flex items-center justify-center
-                  rounded-xl px-6 py-3
+                  inline-flex items-center justify-center rounded-xl px-6 py-3
                   bg-sky-600 text-white font-semibold
                   shadow-[0_12px_30px_rgba(2,132,199,0.25)]
                   hover:bg-sky-700 transition
@@ -366,7 +302,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ id }) => {
               </button>
 
               <div className="hidden sm:block text-xs text-slate-500">
-                Réponse rapide • Support 24/7
+                {t("contact.fastReply")}
               </div>
             </div>
           </form>

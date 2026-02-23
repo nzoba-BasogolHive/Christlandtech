@@ -3,6 +3,9 @@ const resources = {
   en: {
     translation: {
       // Nav & basics
+
+
+      
 // Hero Slides (Carousel)
 "hero.slides.it.title": "IT services to boost your performance",
 "hero.slides.it.desc":
@@ -14,6 +17,35 @@ const resources = {
 
 "hero.slides.tech.title": "Discover the world of technology",
 "hero.slides.tech.desc": "Find the best brands at the best price.",
+
+// Org chart
+"org.aria": "Company organization chart",
+"org.title": "Company organization chart",
+
+"org.role.presidentFounder": "Founder & President",
+"org.role.coPresidentFounder": "Co-Founder & Co-President",
+"org.role.techLead": "Technical Manager",
+"org.role.salesDirector": "Sales Director",
+"org.role.financeLead": "Finance Manager",
+"org.role.team": "Team",
+
+"org.team.technicians": "Technicians",
+"org.team.sellers": "Sales team",
+
+"org.subtitle.tech.mobile": "Leads the technical team",
+"org.subtitle.tech.desktop": "Technical coordination & operations",
+"org.subtitle.team.tech.mobile": "On-site work, maintenance, support",
+"org.subtitle.team.tech.desktop": "Maintenance, installation, support",
+
+"org.subtitle.sales.mobile": "Develops sales and customer portfolio",
+"org.subtitle.sales.desktop": "Sales strategy & growth",
+"org.subtitle.team.sales.mobile": "Prospecting, follow-up, closing",
+"org.subtitle.team.sales.desktop": "Prospecting, pipeline, conversion",
+
+"org.subtitle.finance.mobile": "Cashflow, accounting, reporting",
+"org.subtitle.finance.desktop": "Budget, accounting, reporting",
+
+"org.name.placeholder": "(Name)",
             
       "Accueil": "Home",
       "A propos": "About",
@@ -101,7 +133,9 @@ const resources = {
       "contact.channel.whatsapp": "WhatsApp",
       "contact.channel.signal": "Signal",
       "contact.channel.telegram": "Telegram",
-
+// Blog / Articles section
+"blog.subtitle": "Tips, news and updates",
+"blog.title": "Our articles",
 
       // Account helpers
       "compte.desc": "Already have an account?",
@@ -115,8 +149,11 @@ const resources = {
       "team.des":
         "We focus on the details of everything we do to help businesses around the world focus on what matters most to them.",
       "team.contact": "Contact Us",
+      "stat.title": "Key figures",
+      "stat.subtitle": "Steady growth driven by our customers’ trust.",
       "stat.client": "Satisfied Clients",
       "stat.exp": "Experience",
+      "stat.hint": "Regularly updated",
       "stat.commande": "Commands",
       "stat2.commander": " Order now",
       "tous": "All",
@@ -235,6 +272,36 @@ const resources = {
 
   fr: {
     translation: {
+// Org chart
+"org.aria": "Organigramme de l'entreprise",
+"org.title": "Organigramme de l’entreprise",
+
+"org.role.presidentFounder": "Président Fondateur",
+"org.role.coPresidentFounder": "Co-Président Fondateur",
+"org.role.techLead": "Responsable Technique",
+"org.role.salesDirector": "Directrice Commerciale",
+"org.role.financeLead": "Responsable Financier",
+"org.role.team": "Équipe",
+
+"org.team.technicians": "Techniciens",
+"org.team.sellers": "Vendeurs",
+
+"org.subtitle.tech.mobile": "Encadre l’équipe technique",
+"org.subtitle.tech.desktop": "Coordination technique & opérations",
+"org.subtitle.team.tech.mobile": "Interventions, maintenance, support",
+"org.subtitle.team.tech.desktop": "Maintenance, installation, support",
+
+"org.subtitle.sales.mobile": "Développe les ventes et le portefeuille clients",
+"org.subtitle.sales.desktop": "Stratégie commerciale & croissance",
+"org.subtitle.team.sales.mobile": "Prospection, suivi clients, closing",
+"org.subtitle.team.sales.desktop": "Prospection, pipeline, conversion",
+
+"org.subtitle.finance.mobile": "Trésorerie, comptabilité, reporting",
+"org.subtitle.finance.desktop": "Budget, comptabilité, reporting",
+
+"org.name.placeholder": "(Nom)",
+
+
 
 // Contact Section
 "contact.badge": "Support 24/7",
@@ -266,7 +333,9 @@ const resources = {
 
 "hero.slides.tech.title": "Découvrez l’univers de la technologie",
 "hero.slides.tech.desc": "Retrouvez les meilleures marques au meilleur prix.",
-
+// Blog / Articles section
+"blog.subtitle": "Conseils, nouveautés et actualités",
+"blog.title": "Nos articles",
       // Nav & basics
       "Accueil": "Accueil",
       "A propos": "A propos",
@@ -368,8 +437,11 @@ const resources = {
       "team.des":
         "Nous nous concentrons sur les détails de tout ce que nous faisons, afin d’aider les entreprises du monde entier à se focaliser sur ce qui compte le plus pour elles.",
       "team.contact": "Nous Contacter",
+      "stat.title": "Nos chiffres clés",
+      "stat.subtitle": "Une croissance continue, portée par la confiance de nos clients.",
       "stat.client": "Clients Satisfaits",
       "stat.exp": "Expérience",
+      "stat.hint": "Mise à jour régulière",
       "stat.commande": "Commandes",
       "stat2.commander": " Commander",
       // services
