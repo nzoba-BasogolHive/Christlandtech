@@ -229,13 +229,22 @@ EMAIL_BACKEND = os.getenv(
 
 EMAIL_HOST = os.getenv("EMAIL_HOST", "ssl0.ovh.net")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
-EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True") == "True"
 
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")  # ex : rol@dibiye.com
+# ⚠️ Important: lire TLS et SSL depuis .env
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "False").lower() == "true"
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "False").lower() == "true"
+
+# Sécurité: ne jamais activer les 2 en même temps
+if EMAIL_USE_TLS and EMAIL_USE_SSL:
+    raise ValueError("EMAIL_USE_TLS et EMAIL_USE_SSL ne peuvent pas être True en même temps.")
+
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
 EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", "20"))
+
+CONTACT_INBOX = os.getenv("CONTACT_INBOX", "nzogue.dibiye@gmail.com")
 
 # === Static (déjà défini plus haut, on garde) ===
 STATIC_URL = "static/"
