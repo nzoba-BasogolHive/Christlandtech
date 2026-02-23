@@ -26,13 +26,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env_prod = BASE_DIR / ".env.prod"
 env_local = BASE_DIR / ".env.local"
 
-env_name = os.getenv("ENV", "local").lower()  # "local" ou "prod"
-
-if env_name == "prod" and env_prod.exists():
+if env_prod.exists():
     load_dotenv(env_prod)
 else:
     load_dotenv(env_local)
-
 # === Sécurité / Debug ===
 
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-insecure-key")
