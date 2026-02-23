@@ -306,7 +306,7 @@ const CategoryEditForm: React.FC = () => {
         kind: "success",
         msg: "Catégorie mise à jour avec succès.",
       });
-console.log("REDIRECT TO:", "/dashboard?tab=categories");
+// console.log("REDIRECT TO:", "/dashboard?tab=categories");
       setTimeout(() => {
       navigate(
         { pathname: "/dashboard", search: "?tab=categories" },

@@ -248,7 +248,7 @@ const validateRequired = (): string | null => {
         kind: "success",
         msg: "Catégorie et sous-catégories créées avec succès.",
       });
-console.log("REDIRECT TO:", "/dashboard?tab=categories");
+// console.log("REDIRECT TO:", "/dashboard?tab=categories");
 setTimeout(() => {
   navigate(
     { pathname: "/dashboard", search: "?tab=categories" },

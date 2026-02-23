@@ -100,7 +100,7 @@ const ProductTable = () => {
   // ================================
   const [selectMode, setSelectMode] = useState(false);
   const [selectedProductIds, setSelectedProductIds] = useState<number[]>([]);
-console.log("DASHBOARD URL:", location.pathname + location.search, "STATE:", location.state);
+// console.log("DASHBOARD URL:", location.pathname + location.search, "STATE:", location.state);
   // ✅ Mode suppression : "single" ou "bulk"
   const [deleteMode, setDeleteMode] = useState<"single" | "bulk">("single");
   const [bulkIds, setBulkIds] = useState<number[]>([]);
