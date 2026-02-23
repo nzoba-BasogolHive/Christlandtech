@@ -25,7 +25,8 @@ const Footer: React.FC = () => {
     { key: "Assistance", to: "/assistance" },
   ];
 
-  const whatsappLink = "https://chat.whatsapp.com/CiwjQaL7T7PfqZbgqAXD?mode=gi";
+  const whatsappLink =
+    "https://chat.whatsapp.com/CiwjQaL7T7PfqZbgqAXD?mode=gi";
   const privacyPdfHref = `${import.meta.env.BASE_URL}docs/Politique_confidentialité.pdf`;
 
   useEffect(() => {
@@ -38,7 +39,8 @@ const Footer: React.FC = () => {
 
   return (
     <>
-      <footer className="bg-[#090808] text-white pt-8 pb-6">
+      {/* ✅ pb-24 pour éviter que le bouton "scroll to top" cache le texte "Developed by..." */}
+      <footer className="bg-[#090808] text-white pt-8 pb-24">
         <div className="mx-auto w-full max-w-screen-2xl px-6 sm:px-10 lg:px-16">
           {/* Top */}
           <div className="flex items-start gap-6">
@@ -76,10 +78,18 @@ const Footer: React.FC = () => {
               className="ml-auto flex items-center gap-5 text-white text-lg lg:text-xl mt-2"
               aria-label={t("Réseaux sociaux") || "Social links"}
             >
-              <a href="#" aria-label="X" className="hover:text-[#00A9DC] transition-colors">
+              <a
+                href="#"
+                aria-label="X"
+                className="hover:text-[#00A9DC] transition-colors"
+              >
                 <FaXTwitter />
               </a>
-              <a href="#" aria-label="LinkedIn" className="hover:text-[#00A9DC] transition-colors">
+              <a
+                href="#"
+                aria-label="LinkedIn"
+                className="hover:text-[#00A9DC] transition-colors"
+              >
                 <FaLinkedinIn />
               </a>
               <a
@@ -89,27 +99,39 @@ const Footer: React.FC = () => {
               >
                 <FaFacebookF />
               </a>
-              <a href="#" aria-label="Instagram" className="hover:text-[#00A9DC] transition-colors">
+              <a
+                href="#"
+                aria-label="Instagram"
+                className="hover:text-[#00A9DC] transition-colors"
+              >
                 <FaInstagram />
               </a>
-              <a href="#" aria-label="YouTube" className="hover:text-[#00A9DC] transition-colors">
+              <a
+                href="#"
+                aria-label="YouTube"
+                className="hover:text-[#00A9DC] transition-colors"
+              >
                 <FaYoutube />
               </a>
             </nav>
           </div>
 
           {/* Contenu */}
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-10">
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-y-6">
             {/* 1) Siège */}
             <div>
               <h2 className="font-semibold text-white text-lg lg:text-xl mb-2">
                 {t("siege")}
               </h2>
-              <p className="text-sm lg:text-base text-white/85">Cameroun, Yaoundé</p>
-              <p className="text-sm lg:text-base text-white/85">Monté Jouvence</p>
+              <p className="text-sm lg:text-base text-white/85">
+                Cameroun, Yaoundé
+              </p>
+              <p className="text-sm lg:text-base text-white/85">
+                Monté Jouvence
+              </p>
             </div>
 
-            {/* 2) Contact (sans WhatsApp ici) */}
+            {/* 2) Contact */}
             <div className="md:justify-self-center">
               <p className="font-semibold text-white mb-2 lg:text-lg">
                 {t("footer.questions.title")}
@@ -146,42 +168,8 @@ const Footer: React.FC = () => {
               <p>{t("footer.support.line3")}</p>
             </div>
 
-            {/* 4) Liens (relative pour placer WhatsApp dans le vide) */}
-            <div className="relative md:justify-self-end">
-              {/* ✅ WhatsApp ABSOLU dans l'espace vide entre Support et Liens */}
-              <div
-                className="
-                  hidden md:flex
-                  absolute
-                  left-[-190px]
-                  top-[40px]
-                  flex-col items-center
-                  gap-2
-                "
-              >
-                <a
-                  href={whatsappLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="
-                    inline-flex items-center justify-center gap-2
-                    rounded-md bg-white/10 hover:bg-white/15 transition
-                    px-3 py-1.5
-                    text-xs lg:text-sm
-                    whitespace-nowrap
-                  "
-                  aria-label="WhatsApp"
-                >
-                  <FaWhatsapp className="text-[#25D366]" />
-                  WhatsApp
-                </a>
-
-                <span className="text-[11px] lg:text-xs text-white/60 text-center">
-                  {t("footer.whatsapp.join")}
-                </span>
-              </div>
-
-              {/* ✅ Liens à droite (ne bouge pas) */}
+            {/* 4) Liens (colonne droite) */}
+            <div className="md:justify-self-end">
               <nav className="space-y-2" aria-label="Liens">
                 {footerLinks.map((link) => (
                   <Link
@@ -194,9 +182,43 @@ const Footer: React.FC = () => {
                 ))}
               </nav>
             </div>
+
+            {/* ✅ WhatsApp placé dans l’espace entouré (entre Support et Liens) */}
+            <div
+              className="
+                flex flex-col gap-2
+                mt-4 items-start text-left
+
+                md:mt-0
+                md:col-start-3 md:col-span-2
+                md:row-start-2
+                md:justify-self-end md:pr-0
+              "
+            >
+              <a
+                href={whatsappLink}
+                target="_blank"
+                rel="noreferrer"
+                className="
+                  inline-flex items-center gap-2
+                  rounded-md bg-white/10 hover:bg-white/15 transition
+                  px-3 py-1.5
+                  text-xs lg:text-sm
+                  whitespace-nowrap
+                "
+                aria-label="WhatsApp"
+              >
+                <FaWhatsapp className="text-[#25D366]" />
+                WhatsApp
+              </a>
+
+              <span className="text-[11px] lg:text-xs text-white/60">
+                {t("footer.whatsapp.join")}
+              </span>
+            </div>
           </div>
 
-          {/* Légal : JAUNE en haut, ROUGE en dessous */}
+          {/* Légal */}
           <div className="mt-10 border-t border-white/10 pt-5">
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
               <div className="text-sm lg:text-base text-white/80">
@@ -219,8 +241,7 @@ const Footer: React.FC = () => {
               </div>
 
               <a
-                href="https://basogolhive.com
- "
+                href="https://basogolhive.com"
                 target="_blank"
                 rel="noreferrer"
                 className="self-start md:self-end md:ml-auto text-base sm:text-lg lg:text-xl font-semibold text-white hover:text-[#00A9DC] transition-colors underline underline-offset-4"

@@ -653,272 +653,344 @@ Téléphone : ${fullTel || "—"}`;
 
           {/* ---- CARTE ACHAT ---- */}
           <article className="relative md:self-center" aria-label="Achat produit">
-            <div className="relative overflow-hidden rounded-2xl border border-gray-200 shadow-sm bg-white">
-              <div className="absolute inset-0 rounded-2xl ring-1 ring-black/5 pointer-events-none" />
+  <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-[0_10px_30px_-18px_rgba(0,0,0,0.35)]">
+    {/* Glow + ring */}
+    <div className="pointer-events-none absolute -top-32 -right-32 h-72 w-72 rounded-full bg-[#00A8E8]/10 blur-3xl" />
+    <div className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-black/5" />
 
-              <div className="px-5 sm:px-7 md:px-8 py-6">
-                <div
-                  className="grid grid-cols-1
-                  sm:grid-cols-[220px_minmax(0,1fr)]
-                  md:grid-cols-[260px_minmax(0,1fr)]
-                  lg:grid-cols-[320px_minmax(0,1fr)]
-                  xl:grid-cols-[360px_minmax(0,1fr)]
-                  2xl:grid-cols-[420px_minmax(0,1fr)]
-                  gap-6 md:gap-8 items-start"
+    <div className="px-5 sm:px-7 md:px-10 py-7 md:py-9">
+      <div
+        className="
+          grid grid-cols-1
+          sm:grid-cols-[220px_minmax(0,1fr)]
+          md:grid-cols-[260px_minmax(0,1fr)]
+          lg:grid-cols-[320px_minmax(0,1fr)]
+          xl:grid-cols-[360px_minmax(0,1fr)]
+          2xl:grid-cols-[420px_minmax(0,1fr)]
+          gap-7 md:gap-10 items-start
+        "
+      >
+        {/* GAUCHE : image + infos */}
+        <div className="flex flex-col">
+          <div className="group relative w-full overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-br from-gray-50 to-white">
+            <div className="pt-[78%]" />
+
+            <img
+              src={imgSrc}
+              loading="lazy"
+              width={300}
+              height={300}
+              alt={mini.nom}
+              className="
+                absolute inset-0 h-full w-full object-contain p-4
+                drop-shadow-sm
+                transition-transform duration-300
+                group-hover:scale-[1.03]
+              "
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG;
+              }}
+            />
+
+            <div className="pointer-events-none absolute inset-0 ring-1 ring-black/5 rounded-2xl" />
+
+            {/* Badge ref */}
+            <div className="absolute left-3 top-3 rounded-full bg-white/80 px-3 py-1 text-[11px] font-semibold text-gray-700 ring-1 ring-black/5 backdrop-blur">
+              {t("com.ref")} {mini.ref}
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <h3 className="text-[18px] md:text-[20px] font-extrabold tracking-tight text-gray-900">
+              {mini.nom}
+            </h3>
+            <p className="mt-1 text-[12px] md:text-[13px] text-gray-500">
+              {t("com.ref")} <span className="font-medium text-gray-700">{mini.ref}</span>
+            </p>
+          </div>
+        </div>
+
+        {/* DROITE : titre + bouton + FORM */}
+        <div className="relative flex flex-col gap-4 md:gap-5 sm:pl-2 md:pl-4">
+          {/* watermark */}
+          <img
+            src={logo}
+            loading="lazy"
+            width={300}
+            height={300}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            className="
+              pointer-events-none select-none
+              absolute right-0 md:right-2 top-3
+              w-[240px] sm:w-[300px] md:w-[340px] lg:w-[520px]
+              opacity-[0.06]
+            "
+          />
+
+          <div className="relative z-10">
+            <div className="mx-auto w-full max-w-[680px]">
+              <h2
+                id="achat-produit-titre"
+                className="text-center text-[18px] md:text-[22px] font-black tracking-wide text-gray-900"
+              >
+                {t("com.ach")}
+              </h2>
+
+              {/* Subtle divider */}
+              <div className="mx-auto mt-3 h-[3px] w-16 rounded-full bg-[#00A8E8]/70" />
+
+              {/* Product name pill */}
+              <div className="mt-6">
+                <button
+                  type="button"
+                  aria-disabled="true"
+                  tabIndex={-1}
+                  className={`
+                    w-full sm:max-w-[560px] mx-auto
+                    inline-flex items-center justify-center gap-2
+                    rounded-2xl border border-[#00A8E8]/25
+                    bg-gradient-to-r from-[#00A8E8] to-[#0087c2]
+                    px-4 py-3.5
+                    text-[15px] font-bold text-white
+                    shadow-[0_10px_25px_-15px_rgba(0,168,232,0.9)]
+                  `}
                 >
-                  {/* GAUCHE : image + infos */}
-                  <div className="flex flex-col">
-                    <div className="relative w-full overflow-hidden rounded-xl bg-gray-50 border border-gray-100">
-                      <div className="pt-[75%]" />
+                  {t("com.nom")} : <span className="truncate">{mini.nom}</span>
+                </button>
+              </div>
 
-                      <img
-                        src={imgSrc}
-                        loading="lazy"
-                        width={300}
-                        height={300}
-                        alt={mini.nom}
-                        className="absolute inset-0 h-full w-full object-contain p-3 drop-shadow-sm"
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG;
-                        }}
-                      />
-
-                      <div className="pointer-events-none absolute inset-0 ring-1 ring-black/5 rounded-xl" />
-                    </div>
-
-                    <div className="mt-3 leading-tight">
-                      <h3 className="text-[18px] md:text-[20px] font-semibold text-gray-900">
-                        {mini.nom}
-                      </h3>
-                      <p className="text-[12px] md:text-[13px] text-gray-500 pt-2">
-                        {t("com.ref")} {mini.ref}
-                      </p>
-                    </div>
+              {/* ====== FORM ====== */}
+              <form className="mt-6" onSubmit={handleSubmit}>
+                <div className="grid gap-6 w-full max-w-[680px] mx-auto pb-2">
+                  {/* TYPE */}
+                  <div>
+                    <label htmlFor={typeId} className="block text-sm font-semibold text-gray-800 mb-1.5">
+                      {t("com.type")} <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      id={typeId}
+                      value={typeDemande}
+                      onChange={(e) => setTypeDemande(e.target.value)}
+                      className="
+                        w-full rounded-xl border border-gray-300 bg-white
+                        px-3.5 py-3 text-sm
+                        shadow-sm
+                        focus:border-[#00A8E8] focus:ring-4 focus:ring-[#00A8E8]/20
+                        outline-none
+                      "
+                    >
+                      <option>{t("com.qo")}</option>
+                      <option>{t("com.ac")}</option>
+                      <option>{t("com.in")}</option>
+                      <option>{t("com.di")}</option>
+                    </select>
                   </div>
 
-                  {/* DROITE : titre + bouton + FORM */}
-                  <div className="relative flex flex-col gap-3 md:gap-4 sm:pl-4 md:pl-6">
-                    <img
-                      src={logo}
-                      loading="lazy"
-                      width={300}
-                      height={300}
-                      alt=""
-                      aria-hidden="true"
-                      draggable={false}
-                      className="pointer-events-none select-none absolute right-2 md:right-6 top-10 w-[240px] sm:w-[300px] md:w-[340px] lg:w-[520px] opacity-10"
+                  {/* QTE */}
+                  <div>
+                    <label htmlFor={qteId} className="block text-sm font-semibold text-gray-800 mb-1.5">
+                      {t("com.quc")} <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      id={qteId}
+                      type="number"
+                      min={1}
+                      placeholder="Ex: 3"
+                      value={qte}
+                      onChange={(e) => setQte(e.target.value)}
+                      className="
+                        w-full rounded-xl border border-gray-300 bg-white
+                        px-3.5 py-3 text-sm
+                        shadow-sm
+                        focus:border-[#00A8E8] focus:ring-4 focus:ring-[#00A8E8]/20
+                        outline-none
+                      "
+                      required
                     />
+                  </div>
 
-                    <div className="relative z-10">
-                      <h2
-                        id="achat-produit-titre"
-                        className="text-[18px] md:text-[22px] font-extrabold tracking-wide text-gray-900 text-center mb-6"
+                  {/* NOM */}
+                  <div>
+                    <label htmlFor={nomId} className="block text-sm font-semibold text-gray-800 mb-1.5">
+                      {t("com.np")} <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      id={nomId}
+                      type="text"
+                      placeholder="Ex: Nzogue Rachel"
+                      value={nom}
+                      onChange={(e) => setNom(e.target.value)}
+                      className="
+                        w-full rounded-xl border border-gray-300 bg-white
+                        px-3.5 py-3 text-sm
+                        shadow-sm
+                        focus:border-[#00A8E8] focus:ring-4 focus:ring-[#00A8E8]/20
+                        outline-none
+                      "
+                      required
+                    />
+                  </div>
+
+                  {/* Téléphone */}
+                  <div>
+                    <label htmlFor={telId} className="block text-sm font-semibold text-gray-800 mb-1.5">
+                      {t("com.tel")} <span className="text-red-500">*</span>
+                    </label>
+
+                    <div className="relative">
+                      <div
+                        className="
+                          flex overflow-hidden rounded-xl border border-gray-300 bg-white
+                          shadow-sm
+                          focus-within:ring-4 focus-within:ring-[#00A8E8]/20
+                          focus-within:border-[#00A8E8]
+                        "
                       >
-                        {t("com.ach")}
-                      </h2>
+                        <button
+                          type="button"
+                          onClick={() => setCountryOpen((open) => !open)}
+                          className="
+                            flex items-center gap-2 px-3.5 py-3 text-sm
+                            bg-gray-50 hover:bg-gray-100
+                            border-r border-gray-200
+                          "
+                          aria-haspopup="listbox"
+                          aria-expanded={countryOpen}
+                          aria-controls="country-listbox"
+                        >
+                          <ReactCountryFlag
+                            svg
+                            countryCode={country.code}
+                            className="h-4 w-6 rounded-sm shadow-sm"
+                          />
+                          <span className="font-semibold text-gray-800">{country.dial}</span>
+                          <FiChevronDown className="h-3 w-3 text-gray-500" aria-hidden="true" />
+                        </button>
 
-                      <button
-                        type="button"
-                        aria-disabled="true"
-                        tabIndex={-1}
-                        className={`w-full sm:max-w-[520px] md:max-w-[560px] mx-auto inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-3.5 text-[15px] font-semibold ${ACCENT} ${ACCENT_HOVER}`}
-                      >
-                        {t("com.nom")} : {mini.nom}
-                      </button>
+                        <input
+                          id={telId}
+                          type="tel"
+                          value={telLocal}
+                          onChange={(e) => setTelLocal(e.target.value)}
+                          className="flex-1 px-3.5 py-3 text-sm bg-transparent outline-none"
+                          placeholder="Ex : 699 99 99 99"
+                          required
+                        />
+                      </div>
 
-                      {/* ====== FORM ====== */}
-                      <form className="mt-4" onSubmit={handleSubmit}>
-                        <div className="grid gap-6 w-full max-w-[620px] mx-auto pb-6">
-                          <div>
-                            <label htmlFor={typeId} className="block text-sm font-semibold text-gray-800 mb-1">
-                              {t("com.type")} <span className="text-red-500">*</span>
-                            </label>
-                            <select
-                              id={typeId}
-                              value={typeDemande}
-                              onChange={(e) => setTypeDemande(e.target.value)}
-                              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-3 text-sm focus:border-[#00A8E8] focus:ring-2 focus:ring-[#00A8E8]/30"
-                            >
-                              <option>{t("com.qo")}</option>
-                              <option>{t("com.ac")}</option>
-                              <option>{t("com.in")}</option>
-                              <option>{t("com.di")}</option>
-                            </select>
-                          </div>
-
-                          <div>
-                            <label htmlFor={qteId} className="block text-sm font-semibold text-gray-800 mb-1">
-                              {t("com.quc")} <span className="text-red-500">*</span>
+                      {countryOpen && (
+                        <div className="absolute z-20 mt-2 w-full overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl">
+                          <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-100 bg-gray-50">
+                            <label htmlFor={countrySearchId} className="sr-only">
+                              Rechercher un pays
                             </label>
                             <input
-                              id={qteId}
-                              type="number"
-                              min={1}
-                              placeholder="Ex: 3"
-                              value={qte}
-                              onChange={(e) => setQte(e.target.value)}
-                              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-3 text-sm focus:border-[#00A8E8] focus:ring-2 focus:ring-[#00A8E8]/30"
-                              required
-                            />
-                          </div>
-
-                          <div>
-                            <label htmlFor={nomId} className="block text-sm font-semibold text-gray-800 mb-1">
-                              {t("com.np")} <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                              id={nomId}
+                              id={countrySearchId}
                               type="text"
-                              placeholder="Ex: Nzogue Rachel"
-                              value={nom}
-                              onChange={(e) => setNom(e.target.value)}
-                              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-3 text-sm focus:border-[#00A8E8] focus:ring-2 focus:ring-[#00A8E8]/30"
-                              required
+                              value={countrySearch}
+                              onChange={(e) => setCountrySearch(e.target.value)}
+                              placeholder="Rechercher un pays"
+                              className="w-full text-sm bg-transparent outline-none"
                             />
                           </div>
 
-                          {/* Téléphone */}
-                          <div>
-                            <label htmlFor={telId} className="block text-sm font-semibold text-gray-800 mb-1">
-                              {t("com.tel")} <span className="text-red-500">*</span>
-                            </label>
-
-                            <div className="relative">
-                              <div className="flex rounded-lg border border-gray-300 bg-white focus-within:ring-2 focus-within:ring-[#00A8E8]/30 focus-within:border-[#00A8E8]">
+                          <ul
+                            id="country-listbox"
+                            className="max-h-64 overflow-y-auto text-sm"
+                            role="listbox"
+                          >
+                            {filteredCountries.map((c) => (
+                              <li key={c.code}>
                                 <button
                                   type="button"
-                                  onClick={() => setCountryOpen((open) => !open)}
-                                  className="flex items-center gap-2 px-3 py-2 text-sm bg-gray-50 hover:bg-gray-100 border-r border-gray-200"
-                                  aria-haspopup="listbox"
-                                  aria-expanded={countryOpen}
-                                  aria-controls="country-listbox"
+                                  onClick={() => {
+                                    setCountry(c);
+                                    setCountryOpen(false);
+                                    setCountrySearch("");
+                                  }}
+                                  className="flex w-full items-center gap-2 px-3 py-2 hover:bg-gray-50 text-left"
+                                  role="option"
+                                  aria-selected={c.code === country.code}
                                 >
                                   <ReactCountryFlag
                                     svg
-                                    countryCode={country.code}
+                                    countryCode={c.code}
                                     className="h-4 w-6 rounded-sm shadow-sm"
                                   />
-                                  <span className="font-medium text-gray-800">{country.dial}</span>
-                                  <FiChevronDown className="h-3 w-3 text-gray-500" aria-hidden="true" />
+                                  <span className="flex-1 truncate">{c.name}</span>
+                                  <span className="text-xs font-medium text-gray-500">{c.dial}</span>
                                 </button>
-
-                                <input
-                                  id={telId}
-                                  type="tel"
-                                  value={telLocal}
-                                  onChange={(e) => setTelLocal(e.target.value)}
-                                  className="flex-1 px-3 py-2 text-sm bg-transparent outline-none"
-                                  placeholder="Ex : 699 99 99 99"
-                                  required
-                                />
-                              </div>
-
-                              {countryOpen && (
-                                <div className="absolute z-20 mt-2 w-full rounded-lg border border-gray-200 bg-white shadow-lg">
-                                  <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-100">
-                                    <label htmlFor={countrySearchId} className="sr-only">
-                                      Rechercher un pays
-                                    </label>
-                                    <input
-                                      id={countrySearchId}
-                                      type="text"
-                                      value={countrySearch}
-                                      onChange={(e) => setCountrySearch(e.target.value)}
-                                      placeholder="Rechercher un pays"
-                                      className="w-full text-sm bg-transparent outline-none"
-                                    />
-                                  </div>
-
-                                  <ul
-                                    id="country-listbox"
-                                    className="max-h-64 overflow-y-auto text-sm"
-                                    role="listbox"
-                                  >
-                                    {filteredCountries.map((c) => (
-                                      <li key={c.code}>
-                                        <button
-                                          type="button"
-                                          onClick={() => {
-                                            setCountry(c);
-                                            setCountryOpen(false);
-                                            setCountrySearch("");
-                                          }}
-                                          className="flex w-full items-center gap-2 px-3 py-1.5 hover:bg-gray-50 text-left"
-                                          role="option"
-                                          aria-selected={c.code === country.code}
-                                        >
-                                          <ReactCountryFlag
-                                            svg
-                                            countryCode={c.code}
-                                            className="h-4 w-6 rounded-sm shadow-sm"
-                                          />
-                                          <span className="flex-1 truncate">{c.name}</span>
-                                          <span className="text-xs text-gray-500">{c.dial}</span>
-                                        </button>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Canal */}
-                          <fieldset className="mt-1">
-                            <legend className="block text-gray-700 mb-2 text-sm">
-                              {t("contact.channel.label") || "Canal de contact préféré"}
-                            </legend>
-                            <div className="flex flex-wrap gap-2" role="radiogroup">
-                              {[
-                                { key: "whatsapp", label: t("contact.channel.whatsapp") || "WhatsApp" },
-                                { key: "signal", label: t("contact.channel.signal") || "Signal" },
-                                { key: "telegram", label: t("contact.channel.telegram") || "Telegram" },
-                              ].map((opt) => {
-                                const active = canal === (opt.key as CanalContact);
-                                return (
-                                  <button
-                                    key={opt.key}
-                                    type="button"
-                                    onClick={() => setCanal(opt.key as CanalContact)}
-                                    className={`px-3 py-1.5 rounded-md text-xs font-medium border transition ${
-                                      active
-                                        ? "bg-[#00A8E8] text-white border-[#00A8E8]"
-                                        : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-                                    }`}
-                                    role="radio"
-                                    aria-checked={active}
-                                  >
-                                    {opt.label}
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          </fieldset>
-
-                          <div
-                            className="pt-2 flex justify-center mt-2"
-                            style={{ marginBottom: "env(safe-area-inset-bottom)" }}
-                          >
-                            <button
-                              type="submit"
-                              disabled={submitting}
-                              className={`${baseBtnClasses} ${channelBtnClasses[canal]}`}
-                            >
-                              {renderSubmitIcon()}
-                              <span>{renderSubmitLabel()}</span>
-                            </button>
-                          </div>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                      </form>
-                      {/* ====== /FORM ====== */}
+                      )}
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 rounded-b-2xl bg-gradient-to-t from-black/5 to-transparent" />
+                  {/* Canal */}
+                  <fieldset className="mt-1">
+                    <legend className="block text-gray-700 mb-2 text-sm font-semibold">
+                      {t("contact.channel.label") || "Canal de contact préféré"}
+                    </legend>
+
+                    <div className="flex flex-wrap gap-2" role="radiogroup">
+                      {[
+                        { key: "whatsapp", label: t("contact.channel.whatsapp") || "WhatsApp" },
+                        { key: "signal", label: t("contact.channel.signal") || "Signal" },
+                        { key: "telegram", label: t("contact.channel.telegram") || "Telegram" },
+                      ].map((opt) => {
+                        const active = canal === (opt.key as CanalContact);
+                        return (
+                          <button
+                            key={opt.key}
+                            type="button"
+                            onClick={() => setCanal(opt.key as CanalContact)}
+                            className={`
+                              px-3.5 py-2 rounded-xl text-xs font-semibold border transition
+                              ${active
+                                ? "bg-[#00A8E8] text-white border-[#00A8E8] shadow-[0_10px_22px_-18px_rgba(0,168,232,1)]"
+                                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                              }
+                            `}
+                            role="radio"
+                            aria-checked={active}
+                          >
+                            {opt.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </fieldset>
+
+                  {/* Submit */}
+                  <div
+                    className="pt-2 flex justify-center mt-2"
+                    style={{ marginBottom: "env(safe-area-inset-bottom)" }}
+                  >
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      className={`${baseBtnClasses} ${channelBtnClasses[canal]}`}
+                    >
+                      {renderSubmitIcon()}
+                      <span>{renderSubmitLabel()}</span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+              {/* ====== /FORM ====== */}
             </div>
-          </article>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 rounded-b-3xl bg-gradient-to-t from-black/5 to-transparent" />
+  </div>
+</article>
         </div>
       </div>
     </section>

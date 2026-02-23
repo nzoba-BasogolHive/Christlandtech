@@ -22,15 +22,27 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Charge .env.prod si présent, sinon .env
-# Charge le fichier .env selon ENV (local par défaut)
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 env_prod = BASE_DIR / ".env.prod"
 env_local = BASE_DIR / ".env.local"
 
-if env_prod.exists():
-    load_dotenv(env_prod)
+env_name = os.getenv("ENV", "local").strip().lower()  # local par défaut
+
+if env_name == "prod":
+    if not env_prod.exists():
+        raise RuntimeError(f".env.prod introuvable: {env_prod}")
+    load_dotenv(env_prod, override=True)
+    # print(f"[settings] Loaded: {env_prod}")
 else:
-    load_dotenv(env_local)
-# === Sécurité / Debug ===
+    if not env_local.exists():
+        raise RuntimeError(f".env.local introuvable: {env_local}")
+    load_dotenv(env_local, override=True)
+    # print(f"[settings] Loaded: {env_local}")
 
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-insecure-key")
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"

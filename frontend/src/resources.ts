@@ -299,7 +299,7 @@ const resources = {
 "org.subtitle.finance.mobile": "Trésorerie, comptabilité, reporting",
 "org.subtitle.finance.desktop": "Budget, comptabilité, reporting",
 
-"org.name.placeholder": "(Nom)",
+"org.name.placeholder": "",
 
 
 
