@@ -26,7 +26,8 @@ const Footer: React.FC = () => {
   ];
 
   const whatsappLink =
-    "https://chat.whatsapp.com/CiwjQaL7T7PfqZbgqAXD?mode=gi";
+    "https://chat.whatsapp.com/CiwjQaL7T7PfqZbgqAXD?mode=git";
+     
   const privacyPdfHref = `${import.meta.env.BASE_URL}docs/Politique_confidentialité.pdf`;
 
   useEffect(() => {
