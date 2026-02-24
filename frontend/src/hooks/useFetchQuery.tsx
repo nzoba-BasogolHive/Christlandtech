@@ -970,31 +970,37 @@ export type VariantPayload = {
 export type ProductPayload = {
   nom: string;
   slug?: string;
-  description_courte?: string;
+  description_courte: string;
   description_long?: string;
   garantie_mois?: number | null;
   poids_grammes?: number | null;
-  est_actif?: boolean;
-  visible?: number | null;
   dimensions?: string;
-  etat?: "neuf" | "occasion" | "reconditionné";
-  categorie?: number | string | null;
-  marque?: number | string | null;
+  etat: string;
+  categorie?: string | null;
+  marque?: string | null;
+  est_actif: boolean;
+  visible: number;
 
-  // 🔧 Attributs au niveau PRODUIT
-  product_attributes?: {
-    code: string;
-    type: "text" | "int" | "dec" | "bool" | "choice";
-    libelle?: string;
-    unite?: string;
-    value: string;
+  product_attributes?: any[];
+
+  variants: {
+    nom: string;
+    sku?: string | null;
+    code_barres?: string;
+    prix?: number | null;
+    prix_promo?: number | null;
+    promo_active?: boolean;
+    promo_debut?: string | null;
+    promo_fin?: string | null;
+    stock?: number;
+    couleur?: string | null;
+    prix_achat?: number | null;
+    variante_poids_grammes?: number | null;
+    variante_est_actif?: boolean;
+    attributes?: any[];
   }[];
 
-  // 🧩 Toutes les variantes (1 ou plusieurs)
-  variants?: VariantPayload[];
-
-  // 🖼 Images
-  images?: {
+  images: {
     url: string;
     alt_text?: string;
     position?: number | null;

@@ -17,6 +17,7 @@ import { useQueryClient } from "@tanstack/react-query";  // ⬅️ AJOUTER ÇA
 type ProduitFormState = {
   nom: string;
   slug: string;
+  capacite_stockage?: string | number; // ✅ AJOUT
   description_courte: string;
   description_long: string;
   garantie_mois: number | null;
@@ -62,6 +63,7 @@ type VarianteFormRow = {
   promo_fin: string;
   est_actif: boolean;
   poids_grammes: number | null;
+ capacite_stockage?: string | number; // ✅ AJOUT
   couleur: string;
   couleur_libre: string;
 };
@@ -108,6 +110,7 @@ const ProductForm: React.FC = () => {
   const [formData, setFormData] = useState<ProduitFormState>({
     nom: "",
     slug: "",
+    capacite_stockage: "",
     description_courte: "",
     description_long: "",
     garantie_mois: null,
@@ -573,12 +576,24 @@ const imagesPayload = validImages.map((i, index) => ({
     prix_achat: formData.prix_achat,
     variante_poids_grammes: formData.variante_poids_grammes,
     variante_est_actif: !!formData.variante_est_actif,
-    attributes: variant_attributes.map((a) => ({
-      code: a.code,
-      type: a.type,
-      value: a.value,
-      
-    })),
+   attributes: [
+  ...variant_attributes.map((a) => ({
+    code: a.code,
+    type: a.type,
+    value: a.value,
+  })),
+
+  // ✅ Ajout capacité stockage pour la variante principale
+  ...(formData.capacite_stockage !== "" && formData.capacite_stockage != null
+    ? [
+        {
+          code: "capacite_stockage",
+          type: "int",
+          value: String(formData.capacite_stockage),
+        },
+      ]
+    : []),
+],
   };
 
   const extraVariantsPayload = extraVariants.map((v) => ({
@@ -600,7 +615,11 @@ couleur:
     prix_achat: v.prix_achat,
     variante_poids_grammes: v.poids_grammes,
     variante_est_actif: v.est_actif,
-    attributes: [] as any[], // pour l’instant pas d’attributs spécifiques
+attributes:
+  v.capacite_stockage !== "" && v.capacite_stockage != null
+    ? [{ code: "capacite_stockage", type: "int", value: String(v.capacite_stockage) }]
+    : [], // pour l’instant pas d’attributs spécifiques
+
   }));
 
   const variants = [mainVariant, ...extraVariantsPayload];
@@ -739,6 +758,7 @@ await Promise.all([
       est_actif: true,
       poids_grammes: null,
       couleur: "",
+      capacite_stockage: "",
       couleur_libre: "",
     },
   ]);
@@ -1504,7 +1524,22 @@ const renderAttrInput = (
       placeholder="Poids variante (g) (optionnel)"
     />
   </div>
-
+<div className="flex flex-col gap-1">
+  <label className="text-sm text-gray-700 font-medium">Capacité stockage</label>
+  <input
+    type="number"
+    name="capacite_stockage"
+    value={formData.capacite_stockage ?? ""}
+    onChange={(e) =>
+      setFormData(p => ({
+        ...p,
+        capacite_stockage: e.target.value === "" ? "" : Number(e.target.value),
+      }))
+    }
+    className="border rounded-lg p-2 bg-gray-100 w-full outline-[#00A9DC]"
+    placeholder="Ex: 64"
+  />
+</div>
   {/* Promo active */}
   <div className="flex items-center gap-2">
     <label className="inline-flex items-center gap-2">
@@ -1634,7 +1669,22 @@ const renderAttrInput = (
     menuClassName="z-50"
   />
 </div>
-
+<div className="flex flex-col gap-1">
+  <label className="text-xs text-gray-700">Capacité stockage</label>
+  <input
+    type="number"
+    className="border rounded-lg p-2 bg-gray-100 w-full outline-[#00A9DC] text-sm"
+    value={v.capacite_stockage ?? ""}
+    onChange={(e) =>
+      updateVariantRow(
+        idx,
+        "capacite_stockage" as any,
+        e.target.value === "" ? "" : Number(e.target.value)
+      )
+    }
+    placeholder="Ex: 64"
+  />
+</div>
 
           <div className="flex flex-col gap-1">
             <label className="text-xs text-gray-700">Prix</label>

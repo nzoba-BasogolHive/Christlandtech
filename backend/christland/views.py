@@ -588,6 +588,16 @@ class CategoryFilters(APIView):
 
         def is_variant_attr(code: str) -> bool:
             c = (code or "").lower()
+
+            # ✅ Ces attributs doivent TOUJOURS être au niveau VARIANTE
+            ALWAYS_VARIANT = {
+                "couleur",
+                "capacite_stockage",
+            }
+
+            if c in ALWAYS_VARIANT:
+                return True
+
             return c == "couleur" or (c in var_attr_codes and c not in prod_attr_codes)
 
         attributes_product = [m for m in attrs_meta if not is_variant_attr(m["code"])]
@@ -1024,12 +1034,23 @@ class ProduitsListCreateView(generics.ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
 
     def get_queryset(self):
-        include_deleted = str(self.request.query_params.get("include_deleted") or "").lower() in ("1","true","yes")
+        include_deleted = _to_bool(self.request.query_params.get("include_deleted"), default=False)
+        active_only = str(self.request.query_params.get("active_only") or "1").lower() in ("1","true","yes")
 
-        qs = Produits.objects.filter(est_actif=True)
+        qs = Produits.objects.all()
 
+        if active_only:
+            qs = qs.filter(est_actif=True)
+        else:
+            qs = qs.filter(est_actif=False)
+
+        # ✅ soft delete
         if not include_deleted:
             qs = qs.filter(is_deleted=False)
+
+        # ✅ filtre optionnel: actifs seulement
+        if active_only:
+            qs = qs.filter(est_actif=True)
 
         qs = (
             qs.order_by("-cree_le", "-id")
@@ -1706,6 +1727,7 @@ class DashboardProductEditDataView(APIView):
                 "nom": v.nom or "",
                 "sku": v.sku or "",
                 "code_barres": v.code_barres or "",
+                "attributes": _specs_to_filled_list(v.specs.all()) if hasattr(v, "specs") else [],
                 "prix": v.prix,
                 "prix_promo": v.prix_promo,
                 "promo_active": bool(v.promo_active),
@@ -3082,23 +3104,26 @@ class DashboardStatsView(APIView):
         return ctx
     
     def get(self, request):
-        users_count = Utilisateurs.objects.count()
-        articles_count = ArticlesBlog.objects.count()
-        messages_count = MessagesContact.objects.count()
-        products_count = Produits.objects.count()
+            users_count = Utilisateurs.objects.count()
+            articles_count = ArticlesBlog.objects.filter(is_deleted=False).count()
+            messages_count = MessagesContact.objects.count()
 
-        stock_total = VariantesProduits.objects.aggregate(
-            total=Coalesce(Sum("stock"), 0)
-        )["total"] or 0
+            products_count = Produits.objects.filter(is_deleted=False).count()
 
-        data = {
-            "users": users_count,
-            "products_stock": int(stock_total),
-            "products": products_count,   # utile si tu veux l’afficher aussi
-            "articles": articles_count,
-            "messages": messages_count,
-        }
-        return Response(data, status=status.HTTP_200_OK)        
+            stock_total = (
+                VariantesProduits.objects
+                .filter(produit__is_deleted=False)
+                .aggregate(total=Coalesce(Sum("stock"), 0))["total"]
+            ) or 0
+
+            data = {
+                "users": users_count,
+                "products": products_count,          # ✅ nombre de produits
+                "products_stock": int(stock_total),  # ✅ stock total
+                "articles": articles_count,
+                "messages": messages_count,
+            }
+            return Response(data, status=status.HTTP_200_OK)  
  # --------------------------------------------------------------------
 # Permissions
 # --------------------------------------------------------------------

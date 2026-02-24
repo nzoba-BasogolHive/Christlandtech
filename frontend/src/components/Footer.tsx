@@ -25,9 +25,7 @@ const Footer: React.FC = () => {
     { key: "Assistance", to: "/assistance" },
   ];
 
-  const whatsappLink =
-    "https://chat.whatsapp.com/CiwjQaL7T7PfqZbgqAXD?mode=git";
-     
+  const whatsappLink = "https://chat.whatsapp.com/Ciwi9gaLI7f7PfgZbggAXD?mode=git";
   const privacyPdfHref = `${import.meta.env.BASE_URL}docs/Politique_confidentialité.pdf`;
 
   useEffect(() => {
@@ -117,6 +115,7 @@ const Footer: React.FC = () => {
           </div>
 
           {/* Contenu */}
+          {/* ✅ swap violet(links) <-> vert(contact) : on met CONTACT en 2e colonne, LIENS en 4e colonne */}
           <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-10">
             {/* 1) Siège */}
             <div>
@@ -126,10 +125,12 @@ const Footer: React.FC = () => {
               <p className="text-sm lg:text-base text-white/85">
                 Cameroun, Yaoundé
               </p>
-              <p className="text-sm lg:text-base text-white/85">Monté Jouvence</p>
+              <p className="text-sm lg:text-base text-white/85">
+                Monté Jouvence
+              </p>
             </div>
 
-            {/* 2) Contact */}
+            {/* 2) ✅ Contact (était en 4e) */}
             <div className="md:justify-self-center">
               <p className="font-semibold text-white mb-2 lg:text-lg">
                 {t("footer.questions.title")}
@@ -153,6 +154,23 @@ const Footer: React.FC = () => {
                     676089671
                   </a>
                 </div>
+
+                <div className="pt-2 flex flex-col items-start gap-1">
+                  <a
+                    href={whatsappLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-md bg-white/10 hover:bg-white/15 transition px-4 py-2 text-sm lg:text-base"
+                    aria-label="WhatsApp"
+                  >
+                    <FaWhatsapp className="text-[#25D366]" />
+                    WhatsApp
+                  </a>
+
+                  <span className="text-xs lg:text-sm text-white/60">
+                    {t("footer.whatsapp.join")}
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -164,86 +182,28 @@ const Footer: React.FC = () => {
               <p>{t("footer.support.line1")}</p>
               <p>{t("footer.support.line2")}</p>
               <p>{t("footer.support.line3")}</p>
-
-              {/* ✅ WhatsApp visible sur TELEPHONE + TABLETTE (mobile + md) */}
-              <div className="flex lg:hidden mt-4 flex-col items-start gap-2">
-                <a
-                  href={whatsappLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="
-                    inline-flex items-center justify-center gap-2
-                    rounded-md bg-white/10 hover:bg-white/15 transition
-                    px-3 py-1.5
-                    text-xs sm:text-sm
-                    whitespace-nowrap
-                  "
-                  aria-label="WhatsApp"
-                >
-                  <FaWhatsapp className="text-[#25D366]" />
-                  WhatsApp
-                </a>
-
-                <span className="text-[11px] sm:text-xs text-white/60">
-                  {t("footer.whatsapp.join")}
-                </span>
-              </div>
             </div>
 
-            {/* 4) Liens */}
-            <div className="relative md:justify-self-end">
-              {/* ✅ WhatsApp ABSOLU uniquement sur DESKTOP (lg+) */}
-              <div
-                className="
-                  hidden lg:flex
-                  absolute
-                  left-[-190px]
-                  top-[40px]
-                  flex-col items-center
-                  gap-2
-                "
-              >
-                <a
-                  href={whatsappLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="
-                    inline-flex items-center justify-center gap-2
-                    rounded-md bg-white/10 hover:bg-white/15 transition
-                    px-3 py-1.5
-                    text-sm
-                    whitespace-nowrap
-                  "
-                  aria-label="WhatsApp"
+            {/* 4) ✅ Liens (était en 2e) */}
+            <nav className="space-y-2 md:justify-self-end" aria-label="Liens">
+              {footerLinks.map((link) => (
+                <Link
+                  key={link.key}
+                  to={link.to}
+                  className="block text-sm lg:text-base text-white/85 hover:text-[#00A9DC] transition-colors"
                 >
-                  <FaWhatsapp className="text-[#25D366]" />
-                  WhatsApp
-                </a>
-
-                <span className="text-xs text-white/60 text-center">
-                  {t("footer.whatsapp.join")}
-                </span>
-              </div>
-
-              {/* Liens */}
-              <nav className="space-y-2" aria-label="Liens">
-                {footerLinks.map((link) => (
-                  <Link
-                    key={link.key}
-                    to={link.to}
-                    className="block text-sm lg:text-base text-white/85 hover:text-[#00A9DC] transition-colors"
-                  >
-                    {t(link.key)}
-                  </Link>
-                ))}
-              </nav>
-            </div>
+                  {t(link.key)}
+                </Link>
+              ))}
+            </nav>
           </div>
 
-          {/* Légal */}
-          <div className="mt-10 border-t border-white/10 pt-5">
+          {/* ✅ Légal : JAUNE en haut, ROUGE en dessous */}
+          <div className="mt-10 border-t border-white/10 pt-5 pb-[calc(96px+env(safe-area-inset-bottom))]">
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+              {/* Colonne gauche : 2 lignes */}
               <div className="text-sm lg:text-base text-white/80">
+                {/* Ligne 1 (JAUNE) */}
                 <div className="flex flex-wrap gap-x-6 gap-y-2">
                   <span>{t("footer.legal.title")}</span>
 
@@ -256,17 +216,19 @@ const Footer: React.FC = () => {
                   </button>
                 </div>
 
+                {/* Ligne 2 (ROUGE) — en dessous */}
                 <div className="mt-2 flex flex-wrap gap-x-6 gap-y-2">
                   <span>{t("footer.legal.shipping")}</span>
                   <span>{t("footer.copyright")}</span>
                 </div>
               </div>
 
+              {/* Droite : Développé par Basogol-Hive (seul, bien visible) */}
               <a
                 href="https://basogol-hive.tech"
                 target="_blank"
                 rel="noreferrer"
-                className="self-start md:self-end md:ml-auto text-base sm:text-lg lg:text-xl font-semibold text-white hover:text-[#00A9DC] transition-colors underline underline-offset-4"
+                className="text-sm lg:text-base text-white/80 hover:text-[#00A9DC] transition-colors underline underline-offset-4"
               >
                 {t("footer.dev")}
               </a>

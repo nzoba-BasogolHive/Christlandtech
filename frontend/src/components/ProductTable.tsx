@@ -64,11 +64,10 @@ const ProductTable = () => {
     setActiveTab(getTabFromUrl());
   }, [location.search]);
   const [page, setPage] = useState(1);
-
+const [showInactive, setShowInactive] = useState(false);
   const [products, setProducts] = useState<ApiProduct[]>([]);
   const [articles, setArticles] = useState<ApiArticle[]>([]);
   const [categories, setCategories] = useState<CategoryNode[]>([]);
-
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -98,6 +97,7 @@ const ProductTable = () => {
   // ================================
   // ✅ MODE SELECTION (Produits)
   // ================================
+  
   const [selectMode, setSelectMode] = useState(false);
   const [selectedProductIds, setSelectedProductIds] = useState<number[]>([]);
 // console.log("DASHBOARD URL:", location.pathname + location.search, "STATE:", location.state);
@@ -144,7 +144,7 @@ const ProductTable = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await getDashboardProducts({ page, page_size: PAGE_SIZE });
+      const data = await getDashboardProducts({ page, page_size: PAGE_SIZE,active_only: showInactive ? 0 : 1,  q: q || undefined,  });
       if (Array.isArray(data)) {
         setProducts(data);
         setCount(data.length);
@@ -278,7 +278,7 @@ useEffect(() => {
       fetchCategories();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab, page, searchMode]);
+ }, [activeTab, page, searchMode, showInactive]);
 
   // Mode RECHERCHE (q)
   // Mode RECHERCHE (q)
@@ -297,7 +297,7 @@ useEffect(() => {
     setError(null);
     try {
       const [prodsData, artsData] = await Promise.all([
-        getDashboardProducts({ page, page_size: PAGE_SIZE, q }),
+        getDashboardProducts({page,page_size: PAGE_SIZE,q,active_only: showInactive ? 0 : 1,}),
         getDashboardArticles({ page, page_size: PAGE_SIZE, q }),
       ]);
 
@@ -322,7 +322,7 @@ useEffect(() => {
       setLoading(false);
     }
   })();
-}, [q, page, searchMode, location.search]);
+}, [q, page, searchMode, location.search, showInactive]);
 
   useEffect(() => {
     setPage(1);
@@ -485,29 +485,44 @@ useEffect(() => {
         </button>
       </div>
 
-      {/* ✅ Bouton Sélectionner (produits uniquement) */}
-      {activeTab === "produits" && (
-        <div className="mb-3 flex items-center justify-end gap-2">
-          {!selectMode ? (
-            <button
-              className="px-3 py-1.5 rounded-lg border text-gray-700 hover:bg-gray-50"
-              onClick={() => setSelectMode(true)}
-            >
-              Sélectionner
-            </button>
-          ) : (
-            <button
-              className="px-3 py-1.5 rounded-lg border text-gray-700 hover:bg-gray-50"
-              onClick={() => {
-                setSelectMode(false);
-                setSelectedProductIds([]);
-              }}
-            >
-              Quitter la sélection
-            </button>
-          )}
-        </div>
-      )}
+{/* ✅ Actions produits : filtre + sélection */}
+{activeTab === "produits" && (
+  <div className="mb-3 flex items-center justify-between gap-2">
+    {/* ✅ Filtre actifs */}
+   <label className="flex items-center gap-2 text-sm text-gray-700">
+  <input
+    type="checkbox"
+    checked={showInactive}
+    onChange={(e) => {
+      setShowInactive(e.target.checked);
+      setPage(1);
+    }}
+    className="h-4 w-4 accent-[#00A9DC] cursor-pointer"
+  />
+  Afficher les inactifs
+</label>
+
+    {/* ✅ Sélection */}
+    {!selectMode ? (
+      <button
+        className="px-3 py-1.5 rounded-lg border text-gray-700 hover:bg-gray-50"
+        onClick={() => setSelectMode(true)}
+      >
+        Sélectionner
+      </button>
+    ) : (
+      <button
+        className="px-3 py-1.5 rounded-lg border text-gray-700 hover:bg-gray-50"
+        onClick={() => {
+          setSelectMode(false);
+          setSelectedProductIds([]);
+        }}
+      >
+        Quitter la sélection
+      </button>
+    )}
+  </div>
+)}
 
       {/* ✅ Barre d’action sticky (produits uniquement) */}
       {activeTab === "produits" && selectMode && selectedProductIds.length > 0 && (

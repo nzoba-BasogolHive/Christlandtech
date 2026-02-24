@@ -30,7 +30,7 @@ type ProduitFormState = {
   marque_libre: string;
   est_actif: boolean;
   visible: 0 | 1 | null;
-
+ capacite_stockage: number | null;
   // Variante
   variante_nom: string;
   sku: string;
@@ -140,7 +140,7 @@ const ProductEditForm: React.FC = () => {
     marque_libre: "",
     est_actif: true,
     visible: 1,
-
+    capacite_stockage: null,
     variante_nom: "",
     sku: "",
     code_barres: "",
@@ -385,34 +385,51 @@ const onSelectFile = async (_idx: number, file: File | null) => {
         const prod: any = await getDashboardProduct(Number(id));
 
         // Variantes
-        const rawVariants: any[] = Array.isArray(prod?.variants) ? prod.variants : [];
-        const uniqueVariants = rawVariants.filter((v, index) => {
-          if (!v.id) return true;
-          return index === rawVariants.findIndex((vv) => vv.id === v.id);
-        });
+       // Variantes
+const rawVariants: any[] = Array.isArray(prod?.variants) ? prod.variants : [];
+const uniqueVariants = rawVariants.filter((v, index) => {
+  if (!v.id) return true;
+  return index === rawVariants.findIndex((vv) => vv.id === v.id);
+});
 
-        setVariants(
-          uniqueVariants.map((v: any) => ({
-            id: v.id ?? null,
-            variante_nom: v.nom ?? "",
-            sku: v.sku ?? "",
-            code_barres: v.code_barres ?? "",
-            prix: v.prix ?? null,
-            prix_promo: v.prix_promo ?? null,
-            promo_active: !!v.promo_active,
-            promo_debut: v.promo_debut ? String(v.promo_debut).slice(0, 16) : "",
-            promo_fin: v.promo_fin ? String(v.promo_fin).slice(0, 16) : "",
-            stock: v.stock ?? null,
-            prix_achat: v.prix_achat ?? null,
-            variante_poids_grammes: v.variante_poids_grammes ?? null,
-            couleur: v.couleur?.id ?? v.couleur?.slug ?? "",
-            couleur_libre: "",
-            variante_est_actif: !!v.variante_est_actif,
-          }))
-        );
+const getAttr = (v: any, code: string) => {
+  const arr = v?.attributes ?? v?.variant_attributes ?? [];
+  const found = Array.isArray(arr) ? arr.find((a: any) => a?.code === code) : null;
+  return found?.value ?? null;
+};
 
-        const firstVar = prod?.variant ?? null;
+// ✅ variante principale (celle affichée dans formData)
+const firstVar = prod?.variant ?? null;
+const firstVarId = firstVar?.id != null ? String(firstVar.id) : null;
 
+// ✅ on retire la principale de la liste "variants"
+const variantsSansPrincipale = uniqueVariants.filter((v) => {
+  if (!firstVarId) return true;   // si on n'a pas d'ID de principale, on garde tout
+  if (v?.id == null) return true; // si pas d'id (nouvelle), on la garde
+  return String(v.id) !== firstVarId;
+});
+
+setVariants(
+  variantsSansPrincipale.map((v: any) => ({
+    id: v.id ?? null,
+    variante_nom: v.nom ?? "",
+    sku: v.sku ?? "",
+    code_barres: v.code_barres ?? "",
+    prix: v.prix ?? null,
+    prix_promo: v.prix_promo ?? null,
+    promo_active: !!v.promo_active,
+    promo_debut: v.promo_debut ? String(v.promo_debut).slice(0, 16) : "",
+    promo_fin: v.promo_fin ? String(v.promo_fin).slice(0, 16) : "",
+    stock: v.stock ?? null,
+    capacite_stockage: getAttr(v, "capacite_stockage"),
+    prix_achat: v.prix_achat ?? null,
+    variante_poids_grammes: v.variante_poids_grammes ?? null,
+    couleur: v.couleur?.id ?? v.couleur?.slug ?? "",
+    couleur_libre: "",
+    variante_est_actif: !!v.variante_est_actif,
+    attributes: v.attributes ?? v.variant_attributes ?? [],
+  }))
+);
         const rawCat = prod?.categorie ?? null;
         const rawSub = prod?.sous_categorie ?? null;
 
@@ -457,7 +474,7 @@ const onSelectFile = async (_idx: number, file: File | null) => {
           poids_grammes: prod?.poids_grammes ?? null,
           dimensions: prod?.dimensions ?? "",
           etat: prod?.etat ?? "neuf",
-
+          capacite_stockage: firstVar ? Number(getAttr(firstVar, "capacite_stockage")) : null,
           categorie: categorieVal,
           sous_categorie: sousCategorieVal,
 
@@ -709,12 +726,23 @@ const imagesPayload = validImages.map((i, index) => ({
           prix_achat: formData.prix_achat,
           variante_poids_grammes: formData.variante_poids_grammes,
           couleur: couleurValue,
+          
           variante_est_actif: !!formData.variante_est_actif,
         },
       ];
     } else {
       variantsBase = variants;
     }
+
+const mergeCapaciteAttr = (existing: any[] | undefined, capacite: any) => {
+  const base = Array.isArray(existing) ? existing.filter(a => a?.code !== "capacite_stockage") : [];
+  if (capacite === "" || capacite == null) return base;
+
+  return [
+    ...base,
+    { code: "capacite_stockage", type: "int", value: String(capacite) },
+  ];
+};
 
     const payload: any = {
       nom: formData.nom.trim(),
@@ -755,6 +783,7 @@ const imagesPayload = validImages.map((i, index) => ({
         prix: v.prix ?? null,
         prix_promo: v.prix_promo ?? null,
         stock: v.stock ?? 0,
+       attributes: mergeCapaciteAttr(v.attributes, v.capacite_stockage),
       })),
       images: imagesPayload,
     };
@@ -1506,7 +1535,23 @@ const imagesPayload = validImages.map((i, index) => ({
               className="border rounded-lg p-2 bg-gray-100 w-full outline-[#00A9DC]"
             />
           </div>
-
+          <div className="flex flex-col gap-1">
+            <label className="text-sm text-gray-700 font-medium">
+              Capacité stockage (Go)
+            </label>
+            <input
+              type="number"
+              value={formData.capacite_stockage ?? ""}
+              onChange={(e) =>
+                setFormData((p) => ({
+                  ...p,
+                  capacite_stockage: e.target.value === "" ? null : Number(e.target.value),
+                }))
+              }
+              className="border rounded-lg p-2 bg-gray-100 w-full outline-[#00A9DC]"
+              placeholder="ex: 128"
+            />
+          </div>
           {/* Statut variante (fieldset) */}
           <fieldset className="col-span-2 flex flex-wrap items-center gap-4">
             <legend className="text-sm font-medium text-gray-700">
@@ -1547,13 +1592,13 @@ const imagesPayload = validImages.map((i, index) => ({
 
         {/* === Gestion des Variantes (liste) === */}
         <div className="mt-4">
-          {variants.length > 1 && (
+          {variants.length > 0 && (
             <div className="flex items-center justify-between">
               <h4 className="text-md font-semibold">Variantes</h4>
             </div>
           )}
 
-          {variants.length > 1 && (
+          {variants.length > 0 && (
             <div className="mt-3 space-y-4">
               {variants.map((v, index) => (
                 <div
@@ -1564,7 +1609,7 @@ const imagesPayload = validImages.map((i, index) => ({
                     <span className="font-medium text-gray-800">
                       Variante {index + 1}
                     </span>
-                    {variants.length > 1 && (
+                    {variants.length > 0 && (
                       <button
                         type="button"
                         onClick={() => removeVariant(index)}
@@ -1645,7 +1690,18 @@ const imagesPayload = validImages.map((i, index) => ({
                         inputId={`variant_${index}_couleur`}
                       />
                     </div>
-
+<div className="flex flex-col gap-1">
+  <label className="text-sm text-gray-700">Capacité stockage (Go)</label>
+  <input
+    type="number"
+    value={v.capacite_stockage ?? ""}
+    onChange={(e) =>
+      updateVariant(index, "capacite_stockage", e.target.value === "" ? null : Number(e.target.value))
+    }
+    className="border rounded-lg p-2 bg-gray-100 w-full outline-[#00A9DC]"
+    placeholder="ex: 128"
+  />
+</div>
                     {/* SKU */}
                     <div className="flex flex-col gap-1">
                       <label
