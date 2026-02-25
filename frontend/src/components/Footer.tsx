@@ -220,7 +220,7 @@ const Footer: React.FC = () => {
                 <div className="mt-2 flex flex-wrap gap-x-6 gap-y-2">
                   <span>{t("footer.legal.shipping")}</span>
                   <span>{t("footer.copyright")}</span>
-                </div>
+                </div>   
               </div>
 
               {/* Droite : Développé par Basogol-Hive (seul, bien visible) */}

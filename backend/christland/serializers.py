@@ -100,9 +100,18 @@ def get_request_lang(request) -> str:
     """
     Récupère la langue à partir de ?lang= ou des headers.
     Retourne 'fr', 'en', etc.
+
+    ✅ Dashboard : on force FR pour éviter toute traduction automatique.
     """
     if not request:
         return "fr"
+
+    path = (getattr(request, "path", "") or "").lower()
+
+    # ✅ adapte le prefix si ton dashboard est ailleurs
+    if path.startswith("/christland/api/dashboard/"):
+        return "fr"
+
     lang = (
         request.query_params.get("lang")
         or request.headers.get("X-Lang")
