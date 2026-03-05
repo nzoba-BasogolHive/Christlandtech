@@ -14,28 +14,27 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
 
     <!-- ✅ SEO (HOME) -->
-    <title>Acheter laptop à Yaoundé & au Cameroun | Christland Tech</title>
+    <title>Vente d'ordinateurs et laptops à Yaoundé et partout au Cameroun | Christland Tech</title>
 
     <meta
       name="description"
-      content="Achetez votre laptop à Yaoundé et partout au Cameroun chez Christland Tech : ordinateurs portables, PC de bureau, smartphones, TV et accessoires. Prix compétitifs, garantie et livraison rapide."
+      content="Vente d'ordinateurs et laptops à Yaoundé et partout au Cameroun : HP, Dell, Lenovo, Asus, accessoires, maintenance et livraison rapide. Christland Tech."
     />
 
-    <!-- Google ignore meta keywords (tu peux enlever, mais si tu veux garder, OK) -->
+    <!-- (Optionnel) Google ignore meta keywords -->
     <meta
       name="keywords"
       content="acheter laptop yaoundé, ordinateur portable cameroun, pc portable yaoundé, vente ordinateur cameroun, boutique informatique yaoundé, christland tech, smartphones cameroun, tv cameroun"
     />
 
     <link rel="canonical" href="https://christland.tech/" />
-
     <meta name="robots" content="index, follow, max-image-preview:large" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Acheter laptop à Yaoundé & au Cameroun | Christland Tech" />
+    <meta property="og:title" content="Vente d'ordinateurs et laptops à Yaoundé | Christland Tech" />
     <meta
       property="og:description"
-      content="Ordinateurs portables, PC, smartphones, TV, gaming et accessoires au Cameroun. Prix compétitifs, produits garantis et livraison rapide."
+      content="Vente d'ordinateurs et laptops à Yaoundé et partout au Cameroun : PC portables, PC de bureau, smartphones, TV, accessoires. Garantie et livraison rapide."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://christland.tech/" />
@@ -44,10 +43,10 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Acheter laptop à Yaoundé & au Cameroun | Christland Tech" />
+    <meta name="twitter:title" content="Vente d'ordinateurs et laptops à Yaoundé | Christland Tech" />
     <meta
       name="twitter:description"
-      content="Ordinateurs, smartphones, TV, gaming et accessoires au Cameroun. Garantie et livraison rapide."
+      content="Vente d'ordinateurs et laptops à Yaoundé et partout au Cameroun : produits garantis, prix compétitifs et livraison rapide."
     />
     <meta name="twitter:image" content="https://christland.tech/Computer.jpg" />
 
@@ -68,14 +67,31 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4NC2EJJ5PZ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
+      function gtag() {
+        dataLayer.push(arguments);
+      }
       gtag("js", new Date());
       gtag("config", "G-4NC2EJJ5PZ");
     </script>
   </head>
 
   <body>
+    <!-- ✅ Contenu HTML visible AVANT le script (ok pour un fallback) -->
+    <header>
+      <h1>Vente d'ordinateurs et laptops à Yaoundé et partout au Cameroun</h1>
+      <p>
+        Vous cherchez où acheter un laptop à Yaoundé ? Christland Tech est spécialisé dans la vente
+        d'ordinateurs portables, PC de bureau et accessoires informatiques, avec livraison partout au Cameroun.
+      </p>
+    </header>
+
+    <!-- React mount point -->
     <div id="root"></div>
+
+    <!-- React app -->
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- (Optionnel) si JS désactivé -->
+    {% comment %} <noscript>Veuillez activer JavaScript pour afficher le site.</noscript> {% endcomment %}
   </body>
 </html>
