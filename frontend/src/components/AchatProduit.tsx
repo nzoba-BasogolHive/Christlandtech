@@ -19,7 +19,7 @@ const ACCENT = "bg-[#00A8E8] text-white border-[#00A8E8]";
 const ACCENT_HOVER = "hover:opacity-90";
 const WHATSAPP_DEFAULT_PHONE = "+237691554641";
 const TELEGRAM_USERNAME = "Val237"; // ton compte service client, sans @
-const SIGNAL_NUMBER = "+237691554641"; // si tu veux un numéro Signal fixe
+// const SIGNAL_NUMBER = "+237691554641"; // si tu veux un numéro Signal fixe
 
 const FALLBACK_IMG =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect width='100%25' height='100%25' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-family='Arial' font-size='16'%3EImage indisponible%3C/text%3E%3C/svg%3E";
@@ -218,30 +218,30 @@ const AchatProduit: React.FC<Props> = ({
       return;
     }
 
-    if (channel === "signal") {
-      const openSignal = () => {
-        window.open(`https://signal.me/#p/${SIGNAL_NUMBER}`, "_blank");
-      };
+    // if (channel === "signal") {
+    //   const openSignal = () => {
+    //     window.open(`https://signal.me/#p/${SIGNAL_NUMBER}`, "_blank");
+    //   };
 
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard
-          .writeText(fullMsg)
-          .then(() => {
-            openSignal();
-            alert(
-              "Signal va s'ouvrir.\nLe message a été copié, il vous suffit de le coller dans la conversation et de l'envoyer."
-            );
-          })
-          .catch(() => {
-            window.prompt("Copiez ce message puis collez-le dans Signal :", fullMsg);
-            openSignal();
-          });
-      } else {
-        window.prompt("Copiez ce message puis collez-le dans Signal :", fullMsg);
-        openSignal();
-      }
-      return;
-    }
+    //   if (navigator.clipboard && window.isSecureContext) {
+    //     navigator.clipboard
+    //       .writeText(fullMsg)
+    //       .then(() => {
+    //         openSignal();
+    //         alert(
+    //           "Signal va s'ouvrir.\nLe message a été copié, il vous suffit de le coller dans la conversation et de l'envoyer."
+    //         );
+    //       })
+    //       .catch(() => {
+    //         window.prompt("Copiez ce message puis collez-le dans Signal :", fullMsg);
+    //         openSignal();
+    //       });
+    //   } else {
+    //     window.prompt("Copiez ce message puis collez-le dans Signal :", fullMsg);
+    //     openSignal();
+    //   }
+    //   return;
+    // }
   };
 
   const baseBtnClasses =
@@ -534,7 +534,7 @@ Téléphone : ${fullTel || "—"}`;
                         <div className="flex flex-wrap gap-2" role="radiogroup">
                           {[
                             { key: "whatsapp", label: t("contact.channel.whatsapp") || "WhatsApp" },
-                            { key: "signal", label: t("contact.channel.signal") || "Signal" },
+                            // { key: "signal", label: t("contact.channel.signal") || "Signal" },
                             { key: "telegram", label: t("contact.channel.telegram") || "Telegram" },
                           ].map((opt) => {
                             const active = canal === (opt.key as CanalContact);
@@ -939,7 +939,7 @@ Téléphone : ${fullTel || "—"}`;
                     <div className="flex flex-wrap gap-2" role="radiogroup">
                       {[
                         { key: "whatsapp", label: t("contact.channel.whatsapp") || "WhatsApp" },
-                        { key: "signal", label: t("contact.channel.signal") || "Signal" },
+                        // { key: "signal", label: t("contact.channel.signal") || "Signal" },
                         { key: "telegram", label: t("contact.channel.telegram") || "Telegram" },
                       ].map((opt) => {
                         const active = canal === (opt.key as CanalContact);
