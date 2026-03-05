@@ -35,15 +35,9 @@ function OrgNode({ title, name, subtitle, accent = "primary" }: OrgNodeProps) {
   );
 }
 
-/**
- * Organigramme responsive:
- * - Mobile: vertical (sans lignes complexes)
- * - Desktop: structure hiérarchique + lignes via SVG
- */
 const OrgChart: React.FC = () => {
   const { t } = useTranslation();
 
-  // Noms (souvent non traduits)
   const presidentName = "Mougoue Christian";
   const coPresidentName = "MESSINGA MESSINGA Valère";
   const techLeadName = "Mogou Kamta Hernandez";
@@ -57,7 +51,7 @@ const OrgChart: React.FC = () => {
       transition={{ duration: 0.6 }}
       viewport={{ once: true }}
       aria-label={t("org.aria")}
-      className="w-full"
+      className="w-full pb-12 md:pb-16"
     >
       <div className="mx-auto w-full max-w-screen-2xl px-6 sm:px-8 lg:px-10 pt-10 md:pt-14">
         {/* TITRE */}
@@ -67,12 +61,9 @@ const OrgChart: React.FC = () => {
           </h2>
         </div>
 
-        {/* MOBILE (stack) */}
+        {/* MOBILE */}
         <div className="mt-10 md:hidden space-y-6">
-          <OrgNode
-            title={t("org.role.presidentFounder")}
-            name={presidentName}
-          />
+          <OrgNode title={t("org.role.presidentFounder")} name={presidentName} />
 
           <div className="pl-4 border-l-2 border-[#00A9DC]/40">
             <OrgNode
@@ -129,62 +120,74 @@ const OrgChart: React.FC = () => {
           </div>
         </div>
 
-        {/* DESKTOP (diagram + lines) */}
+        {/* DESKTOP */}
         <div className="relative mt-12 hidden md:block">
           <div className="relative mx-auto max-w-6xl rounded-2xl border border-[#00A9DC]/15 bg-white/60 p-8 shadow-sm">
-            {/* SVG lines (desktop only) */}
+            {/* ✅ LIGNES SVG (barre descendue => espace sous Co-président) */}
             <svg
               className="pointer-events-none absolute inset-0 h-full w-full"
-              viewBox="0 0 1200 620"
+              viewBox="0 0 1200 720"
               preserveAspectRatio="none"
               aria-hidden="true"
             >
               <defs>
                 <style>
                   {`
-                    .l { stroke: rgba(0,169,220,.55); stroke-width: 3; fill: none; }
+                    .l { stroke: rgba(0,169,220,.60); stroke-width: 3; fill: none; }
                     .s { stroke: rgba(0,169,220,.35); stroke-width: 2; fill: none; }
                   `}
                 </style>
               </defs>
 
-              <path className="l" d="M600 150 L600 220" />
-              <path className="l" d="M600 220 L600 270" />
-              <path className="l" d="M260 270 L940 270" />
-              <path className="l" d="M260 270 L260 310" />
-              <path className="l" d="M600 270 L600 310" />
-              <path className="l" d="M940 270 L940 310" />
-              <path className="s" d="M260 420 L260 465" />
+              {/* Centres colonnes: 200 / 600 / 1000 */}
+
+              {/* Président -> Co-président */}
+              <path className="l" d="M600 120 L600 210" />
+
+              {/* ✅ Co-président -> barre (allongé pour créer l'espace) */}
+              <path className="l" d="M600 210 L600 340" />
+
+              {/* ✅ Barre horizontale (descendue) */}
+              <path className="l" d="M200 340 L1000 340" />
+
+              {/* Descente vers les 3 responsables */}
+              <path className="l" d="M200 340 L200 410" />
+              <path className="l" d="M600 340 L600 410" />
+              <path className="l" d="M1000 340 L1000 410" />
+
+              {/* Vers équipes */}
+              <path className="s" d="M200 545 L200 600" />
+              <path className="s" d="M600 545 L600 600" />
             </svg>
 
-            {/* Row 1 */}
-            <div className="flex justify-center">
-              <div style={{ width: 420 }}>
-                <OrgNode
-                  title={t("org.role.presidentFounder")}
-                  name={presidentName}
-                />
-              </div>
-            </div>
+          {/* Row 1 */}
+<div className="flex justify-center">
+  <div style={{ width: 520 }}>
+    <OrgNode
+      title={t("org.role.presidentFounder")}
+      name={presidentName}
+    />
+  </div>
+</div>
 
-            <div className="h-16" />
+<div className="h-20" />
 
-            {/* Row 2 */}
-            <div className="flex justify-center">
-              <div style={{ width: 520 }}>
-                <OrgNode
-                  title={t("org.role.coPresidentFounder")}
-                  name={coPresidentName}
-                />
-              </div>
-            </div>
-
+{/* Row 2 */}
+<div className="flex justify-center">
+  <div style={{ width: 520 }}>
+    <OrgNode
+      title={t("org.role.coPresidentFounder")}
+      name={coPresidentName}
+    />
+  </div>
+</div>
+            {/* ✅ IMPORTANT : on ne pousse plus “en bas” inutilement */}
             <div className="h-16" />
 
             {/* Row 3 */}
-            <div className="grid grid-cols-3 gap-8 items-start">
+            <div className="grid grid-cols-3 gap-8 items-start justify-items-center">
               {/* Tech */}
-              <div className="space-y-6">
+              <div className="space-y-6 w-full">
                 <OrgNode
                   title={t("org.role.techLead")}
                   name={techLeadName}
@@ -202,7 +205,7 @@ const OrgChart: React.FC = () => {
               </div>
 
               {/* Commercial */}
-              <div className="space-y-6">
+              <div className="space-y-6 w-full">
                 <OrgNode
                   title={t("org.role.salesDirector")}
                   name={salesDirectorName}
@@ -220,7 +223,7 @@ const OrgChart: React.FC = () => {
               </div>
 
               {/* Finance */}
-              <div className="space-y-6">
+              <div className="space-y-6 w-full">
                 <OrgNode
                   title={t("org.role.financeLead")}
                   name={financeLeadName}

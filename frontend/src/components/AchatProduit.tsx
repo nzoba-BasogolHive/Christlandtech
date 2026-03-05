@@ -364,9 +364,7 @@ Téléphone : ${fullTel || "—"}`;
                   PRODUIT SÉLECTIONNÉ
                 </p>
                 <h3 className="mt-1 text-lg font-extrabold text-gray-900">{mini.nom}</h3>
-                <p className="mt-1 text-sm text-gray-600">
-                  {t("com.ref")} {mini.ref ?? "—"}
-                </p>
+                
               </div>
             </aside>
 
