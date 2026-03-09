@@ -225,7 +225,7 @@ const Footer: React.FC = () => {
 
               {/* Droite : Développé par Basogol-Hive (seul, bien visible) */}
               <a
-                href="https://basogol-hive.tech"
+                href="https://basogolhive.com"
                 target="_blank"
                 rel="noreferrer"
                 className="text-sm lg:text-base text-white/80 hover:text-[#00A9DC] transition-colors underline underline-offset-4"
