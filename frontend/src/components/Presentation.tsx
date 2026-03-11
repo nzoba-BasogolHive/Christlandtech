@@ -9,10 +9,9 @@ import {
 import { MdClose } from "react-icons/md";
 import iphone from "../assets/images/Apple Iphone 15 Black Smartphone PNG _ TopPNG.png";
 import { useTranslation } from "react-i18next";
-
+import { useNavigate, useSearchParams, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { Variants, Transition } from "framer-motion";
-import { useSearchParams } from "react-router-dom";
 import {
   useTopCategories,
   useFilters,
@@ -273,7 +272,8 @@ const Presentation: React.FC<PresentationProps> = ({ onOrder }) => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const q = (searchParams.get("q") || "").trim();
-
+  const { categorySlug: urlCategorySlug } = useParams();
+const navigate = useNavigate();
   // 🔁 Rafraîchir la page quand on arrive avec ?refresh=1
   React.useEffect(() => {
     const flag = searchParams.get("refresh");
@@ -348,9 +348,14 @@ const Presentation: React.FC<PresentationProps> = ({ onOrder }) => {
   }, [syncEdges]);
 
   /** Catégorie active (slug) + sous-catégorie (slug) */
-  const [categorySlug, setCategorySlug] = React.useState<string>("tous");
+const [categorySlug, setCategorySlug] = React.useState<string>(
+  urlCategorySlug || "tous"
+);
   const [subSlug, setSubSlug] = React.useState<string>("");
-
+React.useEffect(() => {
+  setCategorySlug(urlCategorySlug || "tous");
+  setSubSlug("");
+}, [urlCategorySlug]);
   /** Sélections de filtres */
   const [selected, setSelected] = React.useState<Record<string, string>>({});
   const onSelect = (code: string, value: string) => {
@@ -383,6 +388,11 @@ const Presentation: React.FC<PresentationProps> = ({ onOrder }) => {
     const parentField = c.parent_id ?? c.parent ?? null;
     return parentField === null || parentField === undefined;
   });
+
+const activeCategory = React.useMemo(() => {
+  if (categorySlug === "tous") return null;
+  return topCats.find((c: any) => c.slug === categorySlug) ?? null;
+}, [topCats, categorySlug]);
 
   React.useEffect(() => {
     const id = requestAnimationFrame(syncEdges);
@@ -563,6 +573,25 @@ const Presentation: React.FC<PresentationProps> = ({ onOrder }) => {
               >
                 {t("bar.description")}
               </motion.h1>
+
+              {activeCategory ? (
+  <div className="mt-3 max-w-3xl">
+    <h2 className="text-lg md:text-xl font-bold text-gray-900">
+      {activeCategory.nom}
+    </h2>
+    {activeCategory.description ? (
+      <p className="mt-2 text-sm md:text-base text-gray-600">
+        {activeCategory.description}
+      </p>
+    ) : null}
+  </div>
+) : (
+  <div className="mt-3 max-w-3xl">
+  <p className="text-sm md:text-base text-gray-600">
+  {t("products.seo.defaultDescription")}
+</p>
+  </div>
+)}
             </div>
 
             <motion.div
@@ -637,10 +666,11 @@ const Presentation: React.FC<PresentationProps> = ({ onOrder }) => {
             <div className="flex gap-3 lg:gap-4">
               <button
                 type="button"
-                onClick={() => {
-                  setCategorySlug("tous");
-                  setSubSlug("");
-                }}
+   onClick={() => {
+  setCategorySlug("tous");
+  setSubSlug("");
+  navigate("/produits");
+}}
                 className={[
                   "shrink-0 rounded-md border font-medium px-4 lg:px-5 py-2",
                   categorySlug === "tous"
@@ -652,30 +682,35 @@ const Presentation: React.FC<PresentationProps> = ({ onOrder }) => {
                 {t("tous")}
               </button>
 
-              {(catsLoading ? [] : topCats).map((c: any) => {
-                const active = categorySlug === c.slug;
-                return (
-                  <button
-                    key={c.slug}
-                    type="button"
-                    onClick={() => {
-                      setCategorySlug(
-                        active ? "tous" : (c.slug as string) || ""
-                      );
-                      setSubSlug("");
-                    }}
-                    className={[
-                      "shrink-0 rounded-md border font-medium whitespace-nowrap px-4 lg:px-5 py-2",
-                      active
-                        ? `${ACCENT} ${ACCENT_HOVER}`
-                        : "bg-white text-gray-700 border-gray-200 hover:border-[#00A8E8]",
-                    ].join(" ")}
-                    title={c.nom}
-                  >
-                    {c.nom}
-                  </button>
-                );
-              })}
+             {(catsLoading ? [] : topCats).map((c: any) => {
+  const active = categorySlug === c.slug;
+  return (
+    <button
+      key={c.slug}
+      type="button"
+      onClick={() => {
+        const slug = active ? "tous" : (c.slug as string) || "";
+        setCategorySlug(slug);
+        setSubSlug("");
+
+        if (slug === "tous") {
+          navigate("/produits");
+        } else {
+          navigate(`/produits/${slug}`);
+        }
+      }}
+      className={[
+        "shrink-0 rounded-md border font-medium whitespace-nowrap px-4 lg:px-5 py-2",
+        active
+          ? `${ACCENT} ${ACCENT_HOVER}`
+          : "bg-white text-gray-700 border-gray-200 hover:border-[#00A8E8]",
+      ].join(" ")}
+      title={c.nom}
+    >
+      {c.nom}
+    </button>
+  );
+})}
             </div>
           </div>
 
@@ -891,11 +926,12 @@ const Presentation: React.FC<PresentationProps> = ({ onOrder }) => {
               <div className="grid grid-cols-1 gap-2">
                 <button
                   type="button"
-                  onClick={() => {
-                    setCategorySlug("tous");
-                    setSubSlug("");
-                    setMobileCatsOpen(false);
-                  }}
+                 onClick={() => {
+  setCategorySlug("tous");
+  setSubSlug("");
+  navigate("/produits");
+  setMobileCatsOpen(false);
+}}
                   className={`rounded-xl border px-4 py-2 text-sm font-medium text-left ${
                     categorySlug === "tous"
                       ? `${ACCENT} ${ACCENT_HOVER}`
@@ -912,10 +948,10 @@ const Presentation: React.FC<PresentationProps> = ({ onOrder }) => {
                       key={c.slug}
                       type="button"
                       onClick={() => {
-                        setCategorySlug(
-                          active ? "tous" : (c.slug as string) || ""
-                        );
-                        setSubSlug("");
+  const slug = active ? "tous" : (c.slug as string) || "";
+  setCategorySlug(slug);
+  setSubSlug("");
+  navigate(`/produits/${slug}`);
                         setMobileCatsOpen(false);
                       }}
                       className={`rounded-xl border px-4 py-2 text-sm font-medium text-left ${

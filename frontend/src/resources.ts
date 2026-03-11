@@ -17,7 +17,11 @@ const resources = {
 
 "hero.slides.tech.title": "Discover the world of technology",
 "hero.slides.tech.desc": "Find the best brands at the best price.",
-
+"products": {
+  "seo": {
+    "defaultDescription": "Discover our computers, phones, printers, accessories, networking equipment and IT hardware in Cameroon."
+  }
+},
 // Org chart
 "org.aria": "Company organization chart",
 "org.title": "Company organization chart",
@@ -144,7 +148,10 @@ const resources = {
       "compte.desc3": "Sign Up",
 
       // Team / stats / categories
+      "home.seo.title": "Sale of computers, laptops, phones and IT equipment in Cameroon",
+"home.seo.description": "Christland Tech is a store specialized in the sale of computers, laptops, IT accessories, smartphones and networking equipment in Cameroon.",
       "team": "Our Team",
+      'home.seo.badge':'Welcome',
       "categorie": "OUR CATEGORIES",
       "team.des":
         "We focus on the details of everything we do to help businesses around the world focus on what matters most to them.",
@@ -496,9 +503,19 @@ const resources = {
           "Wi-Fi Pro : site survey, contrôleur centralisé, portail captif, roaming fluide, PoE.",
           "Supervision & SLA : monitoring proactif, tableaux de bord, rapports mensuels."
         ],
+"home.seo.title": "Vente d’ordinateurs, laptops, téléphones et matériel informatique au Cameroun",
+"home.seo.description":  "Christland Tech est une boutique spécialisée dans la vente d’ordinateurs, laptops, téléphones, accessoires informatiques et équipements réseaux au Cameroun.",
+
+"products": {
+  "seo": {
+    "defaultDescription": "Découvrez nos ordinateurs, téléphones, imprimantes, accessoires, matériels réseaux et équipements informatiques au Cameroun."
+  }
+},
 
 
 // Footer
+
+
 "footer.support.title": "Support",
 "footer.support.line1": "Disponible 24/7",
 "footer.support.line2": "Réponses rapides",
@@ -516,7 +533,7 @@ const resources = {
 "footer.privacy.modalTitle": "Politique de confidentialité",
 "footer.privacy.fullscreen": "Ouvrir en plein écran",
 "footer.privacy.close": "Fermer ✕",
-
+'home.seo.badge':'Bienvenue',
         
         // Boutons
         "see.more": "Voir plus",

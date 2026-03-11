@@ -124,7 +124,7 @@ const App: React.FC = () => {
             />
 
             {/* === ANCIENNES ROUTES (majuscules / underscores) → REDIRECT === */}
-            <Route path="/Produits" element={<Navigate to="/produits" replace />} />
+           <Route path="/produits/:categorySlug" element={<Produits key={i18n.language} />} />
             <Route path="/Services" element={<Navigate to="/services" replace />} />
             <Route path="/Assistance" element={<Navigate to="/assistance" replace />} />
             <Route path="/Dashboard" element={<Navigate to="/dashboard" replace />} />

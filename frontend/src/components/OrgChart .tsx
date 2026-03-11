@@ -15,22 +15,22 @@ const accentStyles: Record<NonNullable<OrgNodeProps["accent"]>, string> = {
   warning: "border-amber-500 bg-amber-50 text-amber-900",
 };
 
-function OrgNode({ title, name, subtitle, accent = "primary" }: OrgNodeProps) {
+function OrgNode({ title,subtitle, accent = "primary" }: OrgNodeProps) {
   return (
     <div
       className={[
-        "w-full max-w-sm rounded-xl border p-4 shadow-sm",
+        "w-full rounded-xl border p-4 shadow-sm",
         "backdrop-blur-sm",
         accentStyles[accent],
       ].join(" ")}
     >
-      <p className="text-xs font-semibold uppercase tracking-wide opacity-80">
-        {title}
-      </p>
-      <h3 className="mt-1 text-base md:text-lg font-bold">{name}</h3>
-      {subtitle ? (
-        <p className="mt-2 text-sm opacity-80 leading-snug">{subtitle}</p>
-      ) : null}
+     <p className="text-xs font-semibold uppercase tracking-wide opacity-80 text-center">
+  {title}
+</p>
+      {/* <h3 className="mt-1 text-base md:text-lg font-bold">{name}</h3> */}
+     {subtitle ? (
+  <p className="mt-2 text-sm opacity-80 leading-snug text-center">{subtitle}</p>
+) : null}
     </div>
   );
 }
@@ -161,20 +161,19 @@ const OrgChart: React.FC = () => {
             </svg>
 
           {/* Row 1 */}
-<div className="flex justify-center">
-  <div style={{ width: 520 }}>
+<div className="mx-auto flex w-[340px] flex-col items-center">
+  {/* Row 1 */}
+  <div className="w-full">
     <OrgNode
       title={t("org.role.presidentFounder")}
       name={presidentName}
     />
   </div>
-</div>
 
-<div className="h-20" />
+  <div className="h-20" />
 
-{/* Row 2 */}
-<div className="flex justify-center">
-  <div style={{ width: 520 }}>
+  {/* Row 2 */}
+  <div className="w-full">
     <OrgNode
       title={t("org.role.coPresidentFounder")}
       name={coPresidentName}

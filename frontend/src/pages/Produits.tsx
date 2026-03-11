@@ -5,7 +5,7 @@ import ScrollToTopButton from "../components/ScrollToTopButton";
 import Presentation from "../components/Presentation";
 import ContactSection from "../components/ContactSection";
 import AchatProduitModal from "../components/AchatProduitModal";
-
+import { useParams } from "react-router-dom";
 export type ProduitMini = {
   id: number;
   slug: string;
@@ -17,9 +17,12 @@ export type ProduitMini = {
 const Produits: React.FC = () => {
   const [selectedProduct, setSelectedProduct] =
     React.useState<ProduitMini | null>(null);
+  const { categorySlug } = useParams();
 
   const [showOrderModal, setShowOrderModal] = React.useState(false);
 
+  console.log(categorySlug);
+  
   const handleOrder = (p: ProduitMini) => {
     setSelectedProduct(p);
     setShowOrderModal(true);
