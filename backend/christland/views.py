@@ -2936,6 +2936,32 @@ class ProductClickView(APIView):
         prod.refresh_from_db(fields=['commande_count'])
         return Response({"ok": True, "count": prod.commande_count}, status=200)
 
+
+class ProductPublicDetailView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, slug):
+        prod = get_object_or_404(
+            Produits.objects.filter(est_actif=True, visible=1, is_deleted=False)
+            .select_related("categorie", "marque")
+            .prefetch_related("images", "variantes"),
+            slug=slug
+        )
+
+        img = prod.images.filter(principale=True).first() or prod.images.order_by("position", "id").first()
+
+        data = {
+            "id": prod.id,
+            "slug": prod.slug,
+            "nom": prod.nom,
+            "description_courte": prod.description_courte,
+            "description_long": prod.description_long,
+            "image": _abs_media(request, img.url if img else None),
+        }
+        return Response(data)
+
+
+
 class MostDemandedProductsView(APIView):
     """
     GET /christland/api/catalog/products/most-demanded/?limit=2

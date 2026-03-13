@@ -22,7 +22,7 @@ const UpdateProduct = lazy(() => import("./pages/UpdateProduct"));
 const UpdateArticle = lazy(() => import("./pages/UpdateArticle"));
 const UpdateCathegorie = lazy(() => import("./pages/UpdateCathegorie"));
 const AddCathegorie = lazy(() => import("./pages/AddCathegorie"));
-
+// const ProduitDetail = lazy(() => import("./pages/ProduitDetail"));
 const App: React.FC = () => {
   const { i18n } = useTranslation();
   const isLoading = useGlobalLoading();          // état du loader global (fetch)
@@ -125,6 +125,8 @@ const App: React.FC = () => {
 
             {/* === ANCIENNES ROUTES (majuscules / underscores) → REDIRECT === */}
            <Route path="/produits/:categorySlug" element={<Produits key={i18n.language} />} />
+           <Route path="/produits/:categorySlug/:productSlug" element={<Produits  key={i18n.language} />} />
+           <Route path="/produit/:productSlug" element={<Produits key={i18n.language} />} />
             <Route path="/Services" element={<Navigate to="/services" replace />} />
             <Route path="/Assistance" element={<Navigate to="/assistance" replace />} />
             <Route path="/Dashboard" element={<Navigate to="/dashboard" replace />} />

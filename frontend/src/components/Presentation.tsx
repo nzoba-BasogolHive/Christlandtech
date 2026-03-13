@@ -9,7 +9,7 @@ import {
 import { MdClose } from "react-icons/md";
 import iphone from "../assets/images/Apple Iphone 15 Black Smartphone PNG _ TopPNG.png";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useSearchParams, useParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { Variants, Transition } from "framer-motion";
 import {
@@ -190,6 +190,8 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
 };
 
 const ProductCard: React.FC<{
+  slug: string;
+  categorySlug?: string;
   name: string;
   price?: number | null;
   oldPrice?: number | null;
@@ -198,34 +200,45 @@ const ProductCard: React.FC<{
   promoNow?: boolean;
   promoFin?: string | null;
   onOrder?: () => void;
-}> = ({ name, price, oldPrice, img, desc, promoNow, promoFin, onOrder }) => {
+}> = ({ slug, categorySlug, name, price, oldPrice, img, desc, promoNow, promoFin, onOrder }) => {
   const { t } = useTranslation();
+
+const productHref =
+  categorySlug && categorySlug !== "tous"
+    ? `/produits/${categorySlug}/${slug}`
+    : `/produit/${slug}`;
+
+console.log("ProductCard =>", { categorySlug, slug, productHref });
 
   return (
     <article className="group rounded-2xl border border-gray-200 bg-white p-4 shadow transition-shadow hover:shadow-lg">
-      <div className="relative w-full bg-white border border-gray-100 rounded-xl">
-        {promoNow && (
-          <span className="absolute top-2 left-2 z-20 bg-red-600 text-white text-[11px] font-semibold px-2 py-1 rounded-md shadow-lg ring-1 ring-red-500/30  pointer-events-none select-none">
-            PROMO
-          </span>
-        )}
-        <div className="pt-[100%] md:pt-[75%]" />
-        <img
-          src={img}
-          alt={name}
-          loading="lazy"
-          width={800}
-          height={600}
-          className="absolute inset-0 h-full w-full object-contain rounded-xl transition-transform duration-300 ease-out group-hover:scale-[1.02]"
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG;
-          }}
-        />
-      </div>
+      <Link to={productHref} className="block">
+  <div className="relative w-full bg-white border border-gray-100 rounded-xl">
+    {promoNow && (
+      <span className="absolute top-2 left-2 z-20 bg-red-600 text-white text-[11px] font-semibold px-2 py-1 rounded-md shadow-lg ring-1 ring-red-500/30 pointer-events-none select-none">
+        PROMO
+      </span>
+    )}
+    <div className="pt-[100%] md:pt-[75%]" />
+    <img
+      src={img}
+      alt={name}
+      loading="lazy"
+      width={800}
+      height={600}
+      className="absolute inset-0 h-full w-full object-contain rounded-xl transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+      onError={(e) => {
+        (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG;
+      }}
+    />
+  </div>
+</Link>
 
-      <h3 className="mt-3 text-[15px] sm:text-base font-semibold text-gray-900">
-        {name}
-      </h3>
+<Link to={productHref} className="block">
+  <h3 className="mt-3 text-[15px] sm:text-base font-semibold text-gray-900 hover:text-[#00A8E8]">
+    {name}
+  </h3>
+</Link>
       {desc ? (
         <p className="mt-1 line-clamp-2 text-sm text-gray-500">{desc}</p>
       ) : null}
@@ -836,25 +849,27 @@ const activeCategory = React.useMemo(() => {
                       const raw = firstImageUrl(p) || "";
                       const img = raw ? media(raw) : FALLBACK_IMG;
                       return (
-                        <ProductCard
-                          key={p.id}
-                          name={p.nom}
-                          price={
-                            p?.prix_from != null
-                              ? Number(p.prix_from as any)
-                              : null
-                          }
-                          oldPrice={
-                            p?.promo_now && p?.old_price_from != null
-                              ? Number(p.old_price_from as any)
-                              : null
-                          }
-                          img={img}
-                          desc={p.description_courte}
-                          promoNow={p.promo_now}
-                          promoFin={p.promo_fin ?? null}
-                          onOrder={() => orderAndTrack(p, img)}
-                        />
+                   <ProductCard
+  key={p.id}
+  slug={p.slug}
+  categorySlug={categorySlug}
+  name={p.nom}
+  price={
+    p?.prix_from != null
+      ? Number(p.prix_from as any)
+      : null
+  }
+  oldPrice={
+    p?.promo_now && p?.old_price_from != null
+      ? Number(p.old_price_from as any)
+      : null
+  }
+  img={img}
+  desc={p.description_courte}
+  promoNow={p.promo_now}
+  promoFin={p.promo_fin ?? null}
+  onOrder={() => orderAndTrack(p, img)}
+/>
                       );
                     })}
                   </div>

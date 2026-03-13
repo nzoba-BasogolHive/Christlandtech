@@ -9,7 +9,7 @@ from .views import (
     MostDemandedProductsView, DashboardArticlesListCreateView, DashboardArticleDetailView,
     DashboardArticleEditView, BlogLatestView, AdminGlobalSearchView,
     DashboardStatsView, LoginView, MeView, RegisterView,DashboardCategoryListCreateView,DashboardCategoryDetailView,CategoryListTop, DashboardCategoriesSelectView, DashboardCategoriesTreeView,
-    DashboardCategoryRestoreView,DashboardProductRestoreView, DashboardArticleRestoreView,
+    DashboardCategoryRestoreView,DashboardProductRestoreView, DashboardArticleRestoreView,ProductPublicDetailView,
 )
 
 app_name = "christland"
@@ -26,7 +26,7 @@ urlpatterns = [
     path("api/catalog/products/<int:pk>/click/", ProductClickView.as_view(), name="product-click"),
     path("api/catalog/products/most-demanded/", MostDemandedProductsView.as_view(), name="products-most-demanded"),
     path("api/catalog/products/latest/", LatestProductsView.as_view(), name="latest-products"),
-    
+    path("api/catalog/products/<slug:slug>/", ProductPublicDetailView.as_view()),
     # Blog
     path("api/blog/hero/", BlogHeroView.as_view(), name="api_blog_hero"),
     path("api/blog/posts/", BlogPostsView.as_view(), name="api_blog_posts"),
