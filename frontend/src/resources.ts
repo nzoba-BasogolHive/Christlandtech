@@ -101,7 +101,7 @@ const resources = {
       "form.description": "Leave your message",
 
       // Products page / bar
-      "bar.description": "Explore All Products",
+      "bar.description": "Ordinateurs portables à vendre à Yaoundé et partout au Cameroun",
       "bar.cat": "Categories",
 
       // Purchase card (AchatProduit)
@@ -508,7 +508,7 @@ const resources = {
 
 "products": {
   "seo": {
-    "defaultDescription": "Découvrez nos ordinateurs, téléphones, imprimantes, accessoires, matériels réseaux et équipements informatiques au Cameroun."
+    "defaultDescription": "Découvrez notre sélection d’ordinateurs portables au Cameroun : HP, Dell, Lenovo, Asus et autres marques. Disponible à Yaoundé avec livraison partout au Cameroun."
   }
 },
 
