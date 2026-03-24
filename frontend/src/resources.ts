@@ -19,7 +19,7 @@ const resources = {
 "hero.slides.tech.desc": "Find the best brands at the best price.",
 "products": {
   "seo": {
-    "defaultDescription": "Discover our computers, phones, printers, accessories, networking equipment and IT hardware in Cameroon."
+    "defaultDescription": "Discover our selection of laptops in Cameroon: HP, Dell, Lenovo, Asus, and other brands. Available in Yaoundé with delivery across Cameroon."
   }
 },
 // Org chart
@@ -101,7 +101,7 @@ const resources = {
       "form.description": "Leave your message",
 
       // Products page / bar
-      "bar.description": "Ordinateurs portables à vendre à Yaoundé et partout au Cameroun",
+      "bar.description": "Laptops for sale in Yaoundé and across Cameroon",
       "bar.cat": "Categories",
 
       // Purchase card (AchatProduit)
@@ -394,7 +394,7 @@ const resources = {
       "form.description": "Laissez votre message",
 
       // Products page / bar
-      "bar.description": "Explore Tous Les Produits",
+      "bar.description": "Ordinateurs portables à vendre à Yaoundé et partout au Cameroun",
       "bar.cat": "Catégories",
 
       // Purchase card (AchatProduit)
