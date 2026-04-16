@@ -1034,8 +1034,13 @@ class ProduitsListCreateView(generics.ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
 
     def get_queryset(self):
-        include_deleted = _to_bool(self.request.query_params.get("include_deleted"), default=False)
-        active_only = str(self.request.query_params.get("active_only") or "1").lower() in ("1","true","yes")
+        include_deleted = _to_bool(
+            self.request.query_params.get("include_deleted"),
+            default=False
+        )
+        active_only = str(
+            self.request.query_params.get("active_only") or "1"
+        ).lower() in ("1", "true", "yes")
 
         qs = Produits.objects.all()
 
@@ -1044,13 +1049,36 @@ class ProduitsListCreateView(generics.ListCreateAPIView):
         else:
             qs = qs.filter(est_actif=False)
 
-        # ✅ soft delete
         if not include_deleted:
             qs = qs.filter(is_deleted=False)
 
-        # ✅ filtre optionnel: actifs seulement
-        if active_only:
-            qs = qs.filter(est_actif=True)
+        q = (self.request.query_params.get("q") or "").strip()
+        if q:
+            qs = qs.filter(nom__icontains=q)
+
+        # ✅ filtre par catégorie parente -> inclut ses sous-catégories
+        category_id = self.request.query_params.get("category_id") or self.request.query_params.get("categorie")
+        category_slug = (self.request.query_params.get("category_slug") or "").strip().lower()
+
+        if category_id:
+            cat = Categories.objects.filter(
+                id=_as_int(category_id),
+                is_deleted=False,
+                est_actif=True,
+            ).first()
+            if cat:
+                cat_ids = _descendants_ids(cat)
+                qs = qs.filter(categorie_id__in=cat_ids)
+
+        elif category_slug:
+            cat = Categories.objects.filter(
+                slug=category_slug,
+                is_deleted=False,
+                est_actif=True,
+            ).first()
+            if cat:
+                cat_ids = _descendants_ids(cat)
+                qs = qs.filter(categorie_id__in=cat_ids)
 
         qs = (
             qs.order_by("-cree_le", "-id")
@@ -1058,10 +1086,6 @@ class ProduitsListCreateView(generics.ListCreateAPIView):
               .prefetch_related("images", "variantes")
               .distinct()
         )
-
-        q = (self.request.query_params.get("q") or "").strip()
-        if q:
-            qs = qs.filter(nom__icontains=q)
 
         return qs
 

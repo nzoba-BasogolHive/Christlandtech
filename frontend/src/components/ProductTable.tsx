@@ -48,6 +48,7 @@ const ProductTable = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
+const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
 
   const getTabFromUrl = (): TabType => {
     const sp = new URLSearchParams(location.search);
@@ -71,7 +72,7 @@ const [showInactive, setShowInactive] = useState(false);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+const [filterCategories, setFilterCategories] = useState<ApiCategory[]>([]);
   const [deleteErrorMsg, setDeleteErrorMsg] = useState<string | null>(null);
   const [confirmId, setConfirmId] = useState<number | null>(null);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -139,12 +140,20 @@ const [showInactive, setShowInactive] = useState(false);
     setSelectedProductIds([]);
   }, [page, q]);
 
+useEffect(() => {
+  getDashboardCategories({ page: 1, page_size: 500 }).then((data) => {
+    const list = data.results ?? data ?? [];
+    const parentsOnly = list.filter((cat: ApiCategory) => !cat.parent_id);
+    setFilterCategories(parentsOnly);
+  });
+}, []);
+
   // === Fetchers ===
   const fetchProducts = async () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await getDashboardProducts({ page, page_size: PAGE_SIZE,active_only: showInactive ? 0 : 1,  q: q || undefined,  });
+      const data = await getDashboardProducts({ page, page_size: PAGE_SIZE,active_only: showInactive ? 0 : 1,  q: q || undefined,  category_id: selectedCategory || undefined, });
       if (Array.isArray(data)) {
         setProducts(data);
         setCount(data.length);
@@ -267,18 +276,18 @@ useEffect(() => {
   }, [location.search]);
 
   // Mode NORMAL (sans q)
-  useEffect(() => {
-    if (searchMode) return;
+useEffect(() => {
+  if (searchMode) return;
 
-    if (activeTab === "produits") {
-      fetchProducts();
-    } else if (activeTab === "articles") {
-      fetchArticles();
-    } else if (activeTab === "categories") {
-      fetchCategories();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
- }, [activeTab, page, searchMode, showInactive]);
+  if (activeTab === "produits") {
+    fetchProducts();
+  } else if (activeTab === "articles") {
+    fetchArticles();
+  } else if (activeTab === "categories") {
+    fetchCategories();
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [activeTab, page, searchMode, showInactive, selectedCategory]);
 
   // Mode RECHERCHE (q)
   // Mode RECHERCHE (q)
@@ -297,7 +306,7 @@ useEffect(() => {
     setError(null);
     try {
       const [prodsData, artsData] = await Promise.all([
-        getDashboardProducts({page,page_size: PAGE_SIZE,q,active_only: showInactive ? 0 : 1,}),
+        getDashboardProducts({page,page_size: PAGE_SIZE,q,active_only: showInactive ? 0 : 1,category_id: selectedCategory || undefined,}),
         getDashboardArticles({ page, page_size: PAGE_SIZE, q }),
       ]);
 
@@ -322,7 +331,7 @@ useEffect(() => {
       setLoading(false);
     }
   })();
-}, [q, page, searchMode, location.search, showInactive]);
+}, [q, page, searchMode, location.search, showInactive, selectedCategory]);
 
   useEffect(() => {
     setPage(1);
@@ -487,22 +496,41 @@ useEffect(() => {
 
 {/* ✅ Actions produits : filtre + sélection */}
 {activeTab === "produits" && (
-  <div className="mb-3 flex items-center justify-between gap-2">
-    {/* ✅ Filtre actifs */}
-   <label className="flex items-center gap-2 text-sm text-gray-700">
-  <input
-    type="checkbox"
-    checked={showInactive}
-    onChange={(e) => {
-      setShowInactive(e.target.checked);
-      setPage(1);
-    }}
-    className="h-4 w-4 accent-[#00A9DC] cursor-pointer"
-  />
-  Afficher les inactifs
-</label>
+  <div className="mb-3 flex items-center justify-between gap-2 flex-wrap">
+    
+    {/* ✅ SELECT CATEGORIE */}
+    <select
+      value={selectedCategory || ""}
+      onChange={(e) => {
+        const val = e.target.value;
+        setSelectedCategory(val ? Number(val) : null);
+        setPage(1);
+      }}
+      className="border px-3 py-1.5 rounded-lg text-sm"
+    >
+      <option value="">Toutes les catégories</option>
+      {filterCategories.map((cat) => (
+        <option key={cat.id} value={cat.id}>
+          {cat.nom}
+        </option>
+      ))}
+    </select>
 
-    {/* ✅ Sélection */}
+    {/* Filtre actifs */}
+    <label className="flex items-center gap-2 text-sm text-gray-700">
+      <input
+        type="checkbox"
+        checked={showInactive}
+        onChange={(e) => {
+          setShowInactive(e.target.checked);
+          setPage(1);
+        }}
+        className="h-4 w-4 accent-[#00A9DC] cursor-pointer"
+      />
+      Afficher les inactifs
+    </label>
+
+    {/* Bouton sélection */}
     {!selectMode ? (
       <button
         className="px-3 py-1.5 rounded-lg border text-gray-700 hover:bg-gray-50"
