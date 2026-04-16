@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 const Footer: React.FC = () => {
   const { t } = useTranslation();
   const [openPdf, setOpenPdf] = useState(false);
-
+  const currentYear = new Date().getFullYear()
   const footerLinks: { key: string; to: string }[] = [
     { key: "Accueil", to: "/" },
     { key: "A propos", to: "/a-propos" },
@@ -219,7 +219,7 @@ const Footer: React.FC = () => {
                 {/* Ligne 2 (ROUGE) — en dessous */}
                 <div className="mt-2 flex flex-wrap gap-x-6 gap-y-2">
                   <span>{t("footer.legal.shipping")}</span>
-                  <span>{t("footer.copyright")}</span>
+                  <span>{t("footer.copyright", { year: currentYear })}</span>
                 </div>   
               </div>
 

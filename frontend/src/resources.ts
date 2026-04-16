@@ -248,7 +248,7 @@ const resources = {
 "footer.legal.privacy": "Privacy policy",
 "footer.legal.shipping": "Delivery / Warranty & After-sales",
 
-"footer.copyright": "Copyright © 2026 CHRISTLAND TECH.",
+"footer.copyright": "© {{year}} CHRISTLAND TECH.",
 "footer.dev": "Developed by Basogol-Hive",
 "footer.privacy.modalTitle": "Privacy policy",
 "footer.privacy.fullscreen": "Open fullscreen",
@@ -528,7 +528,7 @@ const resources = {
 "footer.legal.privacy": "Politique de confidentialité",
 "footer.legal.shipping": "Livraison / Garantie & SAV",
 
-"footer.copyright": "Copyright © 2026 CHRISTLAND TECH.",
+"footer.copyright": "© {{year}} CHRISTLAND TECH.",
 "footer.dev": "Développé par Basogol-Hive",
 "footer.privacy.modalTitle": "Politique de confidentialité",
 "footer.privacy.fullscreen": "Ouvrir en plein écran",
