@@ -551,7 +551,12 @@ const activeCategory = React.useMemo(() => {
       id: prod.id,
       slug: prod.slug,
       nom: prod.nom,
-      ref: prod.slug?.toUpperCase() ?? "",
+     ref:
+  ((prod as any).ref ??
+    (prod as any).variantes?.[0]?.sku ??
+    prod.slug ??
+    ""
+  ).toUpperCase(),
       image: img,
     });
   };

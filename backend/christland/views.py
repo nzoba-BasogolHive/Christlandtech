@@ -1844,7 +1844,7 @@ class DashboardProductEditDataView(APIView):
 
             # ---- Produit : champs simples ----
             for fld in [
-                "nom", "slug", "description_courte", "description_long",
+                "nom","description_courte", "description_long",
                 "garantie_mois", "poids_grammes", "dimensions", "etat", "visible", "est_actif"
             ]:
                 if fld in data:
@@ -1865,6 +1865,12 @@ class DashboardProductEditDataView(APIView):
                 m, _note = _resolve_marque_verbose(data["marque"])
                 if m:
                     prod.marque = m
+
+            if "nom" in data:
+                prod.nom = data.get("nom") or ""
+
+                # ✅ slug suit automatiquement le nom
+                prod.slug = slugify(prod.nom)[:140]
 
             prod.save()
 

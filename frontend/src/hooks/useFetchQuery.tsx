@@ -206,6 +206,8 @@ export type ApiProduct = {
   id: number;
   nom: string;
   slug: string;
+  ref?: string | null;
+  variantes?: { sku?: string | null }[];
   description_courte?: string;
   prix_from?: number | string | null;       // prix affiché (promo ou normal)
   old_price_from?: number | string | null;  // prix normal des variantes en promo
