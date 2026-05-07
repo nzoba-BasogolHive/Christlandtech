@@ -44,7 +44,7 @@ const Footer: React.FC = () => {
           <div className="flex items-start gap-6">
             <Link
               to="/"
-              className="flex items-center gap-4 min-w-0"
+              className="flex items-center gap-4 min-w-0  shrink-0"
               aria-label={t("Accueil")}
             >
               <div className="h-10 md:h-14 w-10 md:w-14 rounded-full bg-white/10 ring-1 ring-white/10 overflow-hidden">
@@ -55,7 +55,7 @@ const Footer: React.FC = () => {
                   alt="CHRISTLAND TECH"
                   loading="lazy"
                   decoding="async"
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-contain"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).style.display = "none";
                   }}
