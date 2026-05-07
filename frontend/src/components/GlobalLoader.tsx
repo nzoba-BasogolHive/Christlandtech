@@ -8,9 +8,9 @@ const GlobalLoader: React.FC = () => {
       aria-live="polite"
       aria-label="Chargement de la page"
     >
-      <p className="rounded-md bg-white/80 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm backdrop-blur-sm">
-        Chargement de la page en cours...
-      </p>
+<p className="px-4 py-2 text-sm font-medium text-gray-700">
+  Chargement de la page en cours...
+</p>
     </div>
   );
 };
